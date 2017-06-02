@@ -42,6 +42,10 @@ public class ProxyServiceEndPointThroughURLTestCase extends ESBIntegrationTest {
 
     @Test(groups = "wso2.esb", description = "Proxy service with providing endpoint through url")
     public void testLoggingProxy() throws Exception {
+        LogViewerClient logViewerClient = new LogViewerClient(context.getContextUrls().getBackEndUrl(),
+                getSessionCookie());
+        logViewerClient.clearLogs();
+
         OMElement response = axis2Client.sendSimpleStockQuoteRequest
                 (getProxyServiceURLHttp("StockQuoteLoggingProxy"), null, "WSO2");
 
@@ -52,18 +56,13 @@ public class ProxyServiceEndPointThroughURLTestCase extends ESBIntegrationTest {
         String symbol = response.getFirstElement().
                 getFirstChildWithName(new QName("http://services.samples/xsd", "symbol")).getText();
         assertEquals(symbol, "WSO2", "Fault: value 'symbol' mismatched");
-    }
 
-    @Test(groups = "wso2.esb", description = "VerifyLogs")
-    public void testVerifyLogs() throws Exception {
-        LogViewerClient logViewerClient = new LogViewerClient(context.getContextUrls().getBackEndUrl(),
-                getSessionCookie());
         assertNotNull(logViewerClient.getRemoteLogs("INFO", "getQuote", "", ""),
-                      "Request INFO log entry not found");
+                "Request INFO log entry not found");
         assertNotNull(logViewerClient.getRemoteLogs("INFO", "<ns:symbol>WSO2</ns:symbol>", "", ""),
-                      "Request INFO log entry not found");
+                "Request INFO log entry not found");
         assertNotNull(logViewerClient.getRemoteLogs("INFO", "ns:getQuoteResponse", "", ""),
-                      "Request INFO log entry not found");
+                "Request INFO log entry not found");
     }
 
     @AfterClass(alwaysRun = true)
