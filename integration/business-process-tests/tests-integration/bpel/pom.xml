@@ -102,10 +102,11 @@
                         <phase>compile</phase>
                         <configuration>
                             <tasks>
-                                <unzip src="${basedir}/../../../distribution/target/wso2ei-${product.ei.version}.zip"
-                                       dest="${basedir}/../../../distribution/target/"/>
+                                <unzip src="${basedir}/../../../../distribution/target/wso2ei-${product.ei.version}.zip"
+                                       dest="${basedir}/../../../../distribution/target/"/>
                                 <copy todir="${basedir}/target/tobeCopied/wso2ei-${product.ei.version}" overwrite="true">
-                                    <fileset dir="${basedir}/../../../distribution/target/wso2ei-${product.ei.version}">
+                                    <fileset
+                                            dir="${basedir}/../../../../distribution/target/wso2ei-${product.ei.version}">
                                         <include name="**/*.jks" />
                                         <include name="**/*.mar" />
                                         <include name="**/synapse_sample*.xml" />
