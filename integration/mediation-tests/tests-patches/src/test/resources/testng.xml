@@ -94,7 +94,13 @@
         <classes>
             <class name="org.wso2.carbon.esb.mediators.cache.ESBJAVA4318Testcase"/>
             <class name="org.wso2.carbon.esb.mediators.cache.DistributedCachingHeaderSerializationTestcase" />
+        </classes>
+    </test>
+
+    <test name="Cache Mediator Tests" preserve-order="true" verbose="2">
+        <classes>
             <class name="org.wso2.carbon.esb.mediators.cache.ESBJAVA5214TestCase" />
+            <class name="org.wso2.carbon.esb.mediators.cache.ESBJAVA5221TestCase"/>
         </classes>
     </test>
 
