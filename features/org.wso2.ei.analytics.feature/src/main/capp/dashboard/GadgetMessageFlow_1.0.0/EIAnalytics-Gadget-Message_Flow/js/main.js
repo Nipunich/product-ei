@@ -366,7 +366,7 @@ function buildLabel(node) {
         }
 
 
-        labelText = '<a href="#" class="' + nodeClasses +'">'+ icon +'<div data-node-type="' + node.type + '" data-component-id="' + node.modifiedId
+        labelText = '<a href="#" class="' + nodeClasses +'">'+ icon +'<div class="' + nodeClasses +'" data-node-type="' + node.type + '" data-component-id="' + node.modifiedId
             + '" data-hash-code="' + hashCode + '" data-target-url="' + targetUrl + '"><h4>' + node.label + "</h4>";
 
         node.dataAttributes.forEach(function(item, i) {
