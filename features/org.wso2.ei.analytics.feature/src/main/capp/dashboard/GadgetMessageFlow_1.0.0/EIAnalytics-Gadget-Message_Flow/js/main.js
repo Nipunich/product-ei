@@ -360,7 +360,7 @@ function buildLabel(node) {
 
 
         } else if (node.type.toLowerCase() === 'endpoint') {
-            icon = '<i class="icon fw fw-endpoint"></i>';
+            icon = '<i class="icon endpoint-icon fw fw-endpoint"></i>';
         } else {
             icon = '';
         }

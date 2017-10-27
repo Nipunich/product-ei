@@ -134,9 +134,13 @@ label{
 }
 
 .nodeLabel > svg {
-    height: 30px;
+    height: 45px;
 }
 
 .nodeLabel > svg path {
     fill: #fff;
+}
+
+.endpoint-icon {
+    font-size:40px;
 }
