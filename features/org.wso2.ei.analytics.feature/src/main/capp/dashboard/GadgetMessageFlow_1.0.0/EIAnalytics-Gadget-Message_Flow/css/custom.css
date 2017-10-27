@@ -141,6 +141,14 @@ label{
     fill: #fff;
 }
 
+.nodeLabelWrap > svg {
+    height: 45px;
+}
+
+.nodeLabelWrap > svg path {
+    fill: #fff;
+}
+
 .endpoint-icon {
     font-size:40px;
 }
