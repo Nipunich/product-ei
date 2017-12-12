@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,46 +16,30 @@
  * under the License.
  */
 
-package org.wso2.carbon.esb.mailto.transport.receiver.test;
+package org.wso2.carbon.esb.mailto.transport.sender.test;
 
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
-import org.wso2.esb.integration.common.utils.MailToTransportUtil;
 import org.wso2.esb.integration.common.utils.servers.GreenMailServer;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
-import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
-import org.wso2.esb.integration.common.utils.common.TestConfigurationProvider;
-
-import java.io.File;
 
 /**
  * Base class to start and stop GreenMail server
  */
-public class MailToTransportBaseClass extends ESBIntegrationTest {
+public class SenderBaseClass extends ESBIntegrationTest {
 
     private GreenMailServer greenMailServer;
-    private ServerConfigurationManager serverConfigurationManager;
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         super.init(TestUserMode.SUPER_TENANT_ADMIN);
         greenMailServer = new GreenMailServer();
         greenMailServer.startServer();
-        serverConfigurationManager = new ServerConfigurationManager(context);
-        serverConfigurationManager.applyConfiguration(
-                new File(TestConfigurationProvider.getResourceLocation() + File.separator + "artifacts" +
-                         File.separator + "ESB" + File.separator + "mailTransport" + File.separator +
-                         "mailTransportReceiver" + File.separator + "axis2.xml"));
-        MailToTransportUtil.readXMLforEmailCredentials();
-
     }
 
     @AfterTest(alwaysRun = true)
     public void cleanUp() throws Exception {
         greenMailServer.stopServer();
-        if (serverConfigurationManager != null) {
-            serverConfigurationManager.restoreToLastConfiguration();
-        }
     }
 }

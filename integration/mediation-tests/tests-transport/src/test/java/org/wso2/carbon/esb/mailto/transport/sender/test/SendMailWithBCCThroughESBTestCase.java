@@ -18,23 +18,25 @@
 
 package org.wso2.carbon.esb.mailto.transport.sender.test;
 
+import com.icegreen.greenmail.user.GreenMailUser;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axis2.AxisFault;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.esb.integration.common.utils.MailToTransportUtil;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
 import org.wso2.esb.integration.common.utils.clients.axis2client.AxisServiceClient;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 import org.wso2.esb.integration.common.utils.common.TestConfigurationProvider;
 import org.wso2.esb.integration.common.utils.exception.ESBMailTransportIntegrationTestException;
+import org.wso2.esb.integration.common.utils.servers.GreenMailServer;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.Date;
+import javax.mail.MessagingException;
 
 import static org.testng.Assert.assertTrue;
 
@@ -43,6 +45,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class SendMailWithBCCThroughESBTestCase extends ESBIntegrationTest {
 
+    private GreenMailUser bccUser;
 
     private ServerConfigurationManager serverConfigurationManager;
 
@@ -63,16 +66,14 @@ public class SendMailWithBCCThroughESBTestCase extends ESBIntegrationTest {
                 File.separator + "artifacts" + File.separator + "ESB" + File.separator + "mailTransport" +
                 File.separator + "mailTransportSender" + File.separator + "smtpBcc" + File.separator +
                 "mail_sender_bcc.xml");
-
-        MailToTransportUtil.readXMLforEmailCredentials();
-
+        bccUser = GreenMailServer.addUser("wso2bcc@localhost", "wso2bcc", "wso2bcc");
         // Since ESB reads all unread emails one by one, we have to delete the all unread emails to run the test
-        MailToTransportUtil.deleteAllUnreadEmailsFromGmail();
+        GreenMailServer.deleteAllEmails("imap", bccUser);
     }
 
-    @Test(groups = {"wso2.esb"}, description = "Test email sender with BCC " , enabled = false)
+    @Test(groups = {"wso2.esb"}, description = "Test email sender with BCC ")
     public void testEmailTransport()
-            throws ESBMailTransportIntegrationTestException, XMLStreamException, AxisFault {
+            throws ESBMailTransportIntegrationTestException, XMLStreamException, AxisFault, MessagingException {
         Date date = new Date();
         String message = "Send Mail With BCC" + new Timestamp(date.getTime());
         AxisServiceClient axisServiceClient = new AxisServiceClient();
@@ -83,9 +84,8 @@ public class SendMailWithBCCThroughESBTestCase extends ESBIntegrationTest {
                 " <emailSubject> Subject :" + message + "</emailSubject>\n" +
                 "   </soapenv:Body>\n" +
                 " </soapenv:Envelope>");
-
         axisServiceClient.sendReceive(request, getProxyServiceURLHttp("MailToTransportSenderBCC"), "mediate");
-        assertTrue(MailToTransportUtil.waitToCheckEmailReceived(message,"INBOX"), "Mail not received");
+        assertTrue(GreenMailServer.isMailReceived("imap", bccUser, message), "Mail not received");
     }
 
     @AfterClass(alwaysRun = true)

@@ -302,6 +302,10 @@
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-jaas</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
