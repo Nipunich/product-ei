@@ -35,43 +35,40 @@ import java.util.Date;
 import static org.testng.Assert.assertTrue;
 
 /**
- * This class is to test delete email in mailbox if failure occur while receiving email to ESB
+ * This class is to test remove some header and preserve some headers to ESB from email
  */
-public class MailToTransportActionAfterFailureDELETETestCase extends ESBIntegrationTest {
 
-    private String emailSubject;
+public class MailToTransportRemoveHeaderTestCase extends ESBIntegrationTest {
     private static LogViewerClient logViewerClient;
     private static GreenMailClient greenMailClient;
     private static GreenMailUser greenMailUser;
+
 
     @BeforeClass(alwaysRun = true)
     public void initialize() throws Exception {
         super.init();
         loadESBConfigurationFromClasspath(
                 File.separator + "artifacts" + File.separator + "ESB" + File.separator + "mailTransport" +
-                File.separator + "mailTransportReceiver" + File.separator +
-                "mail_transport_actionafter_failure_delete.xml");
+                        File.separator + "mailTransportReceiver" + File.separator + "mail_transport_remove_header.xml");
         logViewerClient = new LogViewerClient(contextUrls.getBackEndUrl(), getSessionCookie());
         greenMailUser = GreenMailServer.getPrimaryUser();
         greenMailClient = new GreenMailClient(greenMailUser);
 
-        // Since ESB reads all unread emails one by one,
-        // we have to delete all unread emails before running the test
+        // Since ESB reads all unread emails one by one, we have to delete
+        // the all unread emails before run the test
         GreenMailServer.deleteAllEmails("imap");
-
     }
 
-    @Test(groups = {"wso2.esb"}, description = "Test email transport received action after failure delete")
-    public void testEmailTransportActionAfterFailureDELETE() throws Exception {
+    @Test(groups = { "wso2.esb" },
+          description = "Test email transport remove header parameter")
+    public void testEmailRemoveHeaderTransport() throws Exception {
         logViewerClient.clearLogs();
         Date date = new Date();
-        emailSubject = "Failure Delete : " + new Timestamp(date.getTime());
+        String emailSubject = "Remove Headers Test : " + new Timestamp(date.getTime());
         greenMailClient.sendMail(emailSubject);
 
-        assertTrue(Utils.checkForLog(logViewerClient, "Failed to process message", 5),
-                "Couldn't get the failure message!");
-
-        assertTrue(GreenMailServer.checkEmailDeleted(emailSubject, "imap"), "Mail has not been deleted successfully");
+        assertTrue(Utils.checkForLog(logViewerClient, "Subject = null", 5),
+                "Mail is not Received by ESB with Delete Header Successfully");
     }
 
     @AfterClass(alwaysRun = true)
@@ -79,5 +76,5 @@ public class MailToTransportActionAfterFailureDELETETestCase extends ESBIntegrat
         super.cleanup();
 
     }
-}
 
+}

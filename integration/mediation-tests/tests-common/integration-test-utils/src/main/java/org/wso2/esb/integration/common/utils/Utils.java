@@ -21,9 +21,14 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
+import org.wso2.carbon.logging.view.stub.LogViewerLogViewerException;
+import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.rmi.RemoteException;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
     public static OMElement getSimpleQuoteRequest(String symbol) {
@@ -117,5 +122,58 @@ public class Utils {
         } catch (Exception e) {
             System.out.println("Error killing the process which uses the port " + port);
         }
+    }
+
+    /**
+     * Check for the existence of the given log message. The polling will happen in one second intervals.
+     *
+     * @param logViewerClient log viewer used for test
+     * @param expected        expected log string
+     * @param timeout         max time to do polling in seconds
+     * @return true if the log is found with given timeout, false otherwise
+     * @throws InterruptedException        if interrupted while sleeping
+     * @throws RemoteException             due to a logviewer error
+     * @throws LogViewerLogViewerException due to a logviewer error
+     */
+    public static boolean checkForLog(LogViewerClient logViewerClient, String expected, int timeout) throws
+            InterruptedException, RemoteException, LogViewerLogViewerException {
+        boolean logExists = false;
+        for (int i = 0; i < timeout; i++) {
+            TimeUnit.SECONDS.sleep(1);
+            if (checkForLog(logViewerClient, expected)) {
+                logExists = true;
+                break;
+            }
+        }
+        return logExists;
+    }
+
+    /**
+     * Checks if a given message string appears in the log.
+     *
+     * @param logViewerClient log viewer client to be used to load the log
+     * @param expected        the expected string in the log
+     * @return
+     * @throws RemoteException             if an error occurs in while loading the logs
+     * @throws LogViewerLogViewerException if an error occurs in while loading the logs
+     */
+    private static boolean checkForLog(LogViewerClient logViewerClient, String expected)
+            throws RemoteException, LogViewerLogViewerException {
+
+        LogEvent[] systemLogs;
+        systemLogs = logViewerClient.getAllRemoteSystemLogs();
+        boolean matchFound = false;
+        if (systemLogs != null) {
+            for (LogEvent logEvent : systemLogs) {
+                if (logEvent == null) {
+                    continue;
+                }
+                if (logEvent.getMessage().contains(expected)) {
+                    matchFound = true;
+                    break;
+                }
+            }
+        }
+        return matchFound;
     }
 }
