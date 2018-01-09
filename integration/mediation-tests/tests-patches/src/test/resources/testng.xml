@@ -317,5 +317,11 @@
             <class name="org.wso2.carbon.esb.datamapper.ESBJAVA5045XsiNilElementSupport"/>
         </classes>
     </test>
+
+    <test name="Template Endpoint test" preserve-order="true" verbose="2">
+        <classes>
+            <class name="org.wso2.carbon.esb.endpoint.test.Issue1604EndpointTemplateSuspensionTest"/>
+        </classes>
+    </test>
 </suite>
 
