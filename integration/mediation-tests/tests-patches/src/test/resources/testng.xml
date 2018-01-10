@@ -323,5 +323,10 @@
             <class name="org.wso2.carbon.esb.endpoint.test.Issue1604EndpointTemplateSuspensionTest"/>
         </classes>
     </test>
+    <test name="Iterator mediator Test" preserve-order="true" verbose="2">
+        <classes>
+            <class name="org.wso2.carbon.esb.mediators.iterator.ESBJAVA4709AggregateEmptyJsonPayloadTestCase"/>
+        </classes>
+    </test>
 </suite>
 
