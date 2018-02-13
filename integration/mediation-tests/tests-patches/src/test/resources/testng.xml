@@ -166,6 +166,13 @@
         </classes>
     </test>
 
+    <test name="Capps/Connectors Add List Permission Test Case" verbose="2">
+        <classes>
+            <class name="org.wso2.carbon.esb.authorization.test.EI932CappsPermissionTestCase"/>
+            <class name="org.wso2.carbon.esb.authorization.test.EI932ConnectorsPermissionTestCase"/>
+        </classes>
+    </test>
+
     <test name="Carbon-app-file-re-deployment-test" preserve-order="true" verbose="2">
         <classes>
             <class name="org.wso2.carbon.esb.car.deployment.test.CarbonApplicationReDeploymentTestCase"/>

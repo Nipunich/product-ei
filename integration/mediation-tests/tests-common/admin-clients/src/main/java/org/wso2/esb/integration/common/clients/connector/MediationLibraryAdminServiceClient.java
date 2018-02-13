@@ -58,4 +58,14 @@ public class MediationLibraryAdminServiceClient {
         return mediationLibraryAdminServiceStub.getAllImports();
     }
 
+    /**
+     * Return list of all installed connectors
+     *
+     * @return String[] with format "{component-namespace}component-name. E.g. {org.wso2.carbon.connector}Sample
+     * @throws RemoteException if an error occurs when invoking service.
+     */
+    public String[] getAllLibraries() throws RemoteException {
+        return mediationLibraryAdminServiceStub.getAllLibraries();
+    }
+
 }
