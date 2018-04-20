@@ -106,5 +106,6 @@ public class BPMNPackageDeploymentResolveTestCase extends BPSMasterTest {
     @AfterClass(alwaysRun = true)
     public void cleanServer() throws Exception {
         workflowServiceClient.undeploy(BPMN_PACKAGE_NAME);
+        server.stopServer();
     }
 }
