@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.extensions.XPathConstants;
 import org.wso2.carbon.automation.test.utils.dbutils.MySqlDatabaseManager;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
 import org.wso2.esb.integration.common.utils.Utils;
@@ -86,7 +87,7 @@ public class JDBCMessageProcessorTestCase extends ESBIntegrationTest {
     @Test(groups = {"wso2.esb"}, description = "Test proxy service with jdbc message store")
     public void testJDBCMessageStoreAndProcessor() throws Exception {
 
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jdbc/jdbc_message_store_and_processor_service.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jdbc/jdbc_message_store_and_processor_service.xml");
         updateESBConfiguration(synapse);
 
         AxisServiceClient client = new AxisServiceClient();

@@ -26,6 +26,7 @@ import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.controller.config.JMSBrokerConfigurationProvider;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 import org.wso2.esb.integration.common.utils.Utils;
 import org.wso2.esb.integration.common.utils.clients.axis2client.AxisServiceClient;
@@ -84,7 +85,7 @@ public class PropertyIntegrationJmsCoorelationIDPropertyTestCase extends ESBInte
 
         super.init();
 
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/mediatorconfig/property" +
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/mediatorconfig/property" +
                                                   "/JMS_COORELATION_ID.xml");
 
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));

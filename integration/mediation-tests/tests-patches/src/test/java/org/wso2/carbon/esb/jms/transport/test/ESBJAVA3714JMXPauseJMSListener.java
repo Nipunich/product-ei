@@ -10,6 +10,7 @@ import org.wso2.carbon.automation.extensions.servers.jmsserver.controller.config
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 
 import javax.management.MBeanServerConnection;
@@ -52,7 +53,7 @@ public class ESBJAVA3714JMXPauseJMSListener extends ESBIntegrationTest {
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/ESBJAVA3714_JMX_Pause_JMS_Listener.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/ESBJAVA3714_JMX_Pause_JMS_Listener.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 
         jmxClient = new JMXClient(null, null, "localhost", "admin", "admin");
@@ -152,15 +153,15 @@ public class ESBJAVA3714JMXPauseJMSListener extends ESBIntegrationTest {
 
     protected void addProxyService(OMElement proxyConfig) throws Exception {
         String proxyName = proxyConfig.getAttributeValue(new QName("name"));
-        if (esbUtils.isProxyServiceExist(contextUrls.getBackEndUrl(), getSessionCookie(), proxyName)) {
-            esbUtils.deleteProxyService(contextUrls.getBackEndUrl(), getSessionCookie(), proxyName);
+        if (ESBTestCaseUtils.isProxyServiceExist(contextUrls.getBackEndUrl(), getSessionCookie(), proxyName)) {
+            ESBTestCaseUtils.deleteProxyService(contextUrls.getBackEndUrl(), getSessionCookie(), proxyName);
         }
-        esbUtils.addProxyService(contextUrls.getBackEndUrl(), getSessionCookie(), setEndpoints(proxyConfig));
+        ESBTestCaseUtils.addProxyService(contextUrls.getBackEndUrl(), getSessionCookie(), setEndpoints(proxyConfig));
     }
 
     protected void deleteProxyService(String proxyName) throws Exception {
-        if (esbUtils.isProxyServiceExist(contextUrls.getBackEndUrl(), getSessionCookie(), proxyName)) {
-            esbUtils.deleteProxyService(contextUrls.getBackEndUrl(), getSessionCookie(), proxyName);
+        if (ESBTestCaseUtils.isProxyServiceExist(contextUrls.getBackEndUrl(), getSessionCookie(), proxyName)) {
+            ESBTestCaseUtils.deleteProxyService(contextUrls.getBackEndUrl(), getSessionCookie(), proxyName);
         }
     }
 

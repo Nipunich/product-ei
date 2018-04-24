@@ -28,6 +28,8 @@ import org.wso2.esb.integration.common.clients.mediation.MessageStoreAdminClient
 import org.wso2.carbon.automation.engine.annotations.ExecutionEnvironment;
 import org.wso2.carbon.automation.engine.annotations.SetEnvironment;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
+
 /**
  *
  * This class checks whether in memory massages are cleaned after restarting the esb
@@ -129,7 +131,7 @@ public class MessageStoreMessageCleaningTestCase extends ESBIntegrationTest {
 	// delete the message store
 	public void clear() throws Exception {
 		if (isMessageStoreCreated) {
-			esbUtils.deleteMessageStore(contextUrls.getBackEndUrl(), getSessionCookie(), MESSAGE_STORE_NAME);
+			ESBTestCaseUtils.deleteMessageStore(contextUrls.getBackEndUrl(), getSessionCookie(), MESSAGE_STORE_NAME);
 		}
 	}
 }

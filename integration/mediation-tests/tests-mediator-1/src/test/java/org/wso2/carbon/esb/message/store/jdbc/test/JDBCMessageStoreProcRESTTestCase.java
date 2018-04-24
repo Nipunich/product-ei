@@ -29,6 +29,7 @@ import org.wso2.carbon.automation.extensions.XPathConstants;
 import org.wso2.carbon.automation.extensions.servers.httpserver.SimpleHttpClient;
 import org.wso2.carbon.automation.test.utils.dbutils.MySqlDatabaseManager;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
@@ -108,7 +109,7 @@ public class JDBCMessageStoreProcRESTTestCase extends ESBIntegrationTest{
 
     @Test(groups = {"wso2.esb"}, description = "JDBC Message store support for RESTful services." )
     public void testJMSMessageStoreAndProcessor() throws Exception {
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jdbc/JDBCMessageStoreREST.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jdbc/JDBCMessageStoreREST.xml");
         updateESBConfiguration(synapse);
 
         HttpResponse response = httpClient.doPost(url, headers, payload, "application/json");

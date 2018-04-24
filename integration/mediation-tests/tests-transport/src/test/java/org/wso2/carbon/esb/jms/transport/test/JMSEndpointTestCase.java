@@ -10,6 +10,7 @@ import org.wso2.carbon.automation.extensions.servers.jmsserver.client.JMSQueueMe
 import org.wso2.carbon.automation.extensions.servers.jmsserver.client.JMSQueueMessageProducer;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.controller.config.JMSBrokerConfigurationProvider;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 
 public class JMSEndpointTestCase extends ESBIntegrationTest {
@@ -18,7 +19,7 @@ public class JMSEndpointTestCase extends ESBIntegrationTest {
     @BeforeClass(alwaysRun = true)
     public void deployeService() throws Exception {
         super.init();
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/jms_transport.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/jms_transport.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
         endPointAdminClient = new EndPointAdminClient(contextUrls.getBackEndUrl(), getSessionCookie());
     }

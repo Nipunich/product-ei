@@ -81,10 +81,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-public class ESBTestCaseUtils {
+public final class ESBTestCaseUtils {
 
-	protected Log log = LogFactory.getLog(getClass());
-	private static int SERVICE_DEPLOYMENT_DELAY = TestConfigurationProvider.getServiceDeploymentDelay();
+	private static final Log log = LogFactory.getLog(ESBTestCaseUtils.class);
+	private static final int SERVICE_DEPLOYMENT_DELAY = TestConfigurationProvider.getServiceDeploymentDelay();
 	private static final String PROXY = "proxy";
 	private static final String LOCAL_ENTRY = "localEntry";
 	private static final String ENDPOINT = "endpoint";
@@ -98,6 +98,8 @@ public class ESBTestCaseUtils {
 	private static final String NAME = "name";
 	private static final String TASK = "task";
 
+	private ESBTestCaseUtils() {
+	}
 
 	/**
 	 * Loads the specified resource from the classpath and returns its content as an OMElement.
@@ -105,7 +107,7 @@ public class ESBTestCaseUtils {
 	 * @param path A relative path to the resource file
 	 * @return An OMElement containing the resource content
 	 */
-	public OMElement loadResource(String path) throws FileNotFoundException,
+	public static OMElement loadResource(String path) throws FileNotFoundException,
 	                                                  XMLStreamException {
 		OMElement documentElement = null;
 		FileInputStream inputStream = null;
@@ -153,7 +155,7 @@ public class ESBTestCaseUtils {
 	 * @param synapseFilePath A relative path to the configuration file
 	 * @throws java.rmi.RemoteException If an error occurs while loading the specified configuration
 	 */
-	public void loadESBConfigurationFrom(String synapseFilePath, String backendURL,
+	public static void loadESBConfigurationFrom(String synapseFilePath, String backendURL,
 	                                     String sessionCookie)
 			throws Exception {
 		OMElement configElement = loadResource(synapseFilePath);
@@ -166,7 +168,7 @@ public class ESBTestCaseUtils {
 	 * @param number Sample number
 	 * @throws Exception If an error occurs while loading the sample configuration
 	 */
-	public OMElement loadESBSampleConfiguration(int number)
+	public static OMElement loadESBSampleConfiguration(int number)
 			throws Exception {
 		String filePath = Paths.get(TestConfigurationProvider.getResourceLocation("ESB"), "samples", "synapse_sample_" + number + ".xml").toString();
 		File configFile = new File(filePath);
@@ -212,7 +214,7 @@ public class ESBTestCaseUtils {
 	 * @throws javax.xml.stream.XMLStreamException
 	 * @throws javax.servlet.ServletException
 	 */
-	public void updateESBConfiguration(OMElement synapseConfig, String backendURL,
+	public static void updateESBConfiguration(OMElement synapseConfig, String backendURL,
 	                                   String sessionCookie)
 			throws Exception {
 		ProxyServiceAdminClient proxyAdmin = new ProxyServiceAdminClient(backendURL, sessionCookie);
@@ -404,7 +406,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.proxyadmin.stub.ProxyServiceAdminProxyAdminException
 	 * @throws InterruptedException
 	 */
-	public void addProxyService(String backEndUrl, String sessionCookie, OMElement proxyConfig)
+	public static void addProxyService(String backEndUrl, String sessionCookie, OMElement proxyConfig)
 			throws Exception {
 		ProxyServiceAdminClient proxyAdmin = new ProxyServiceAdminClient(backEndUrl, sessionCookie);
 		proxyAdmin.addProxyService(proxyConfig);
@@ -414,7 +416,7 @@ public class ESBTestCaseUtils {
 
 	}
 
-	public void addInboundEndpoint(String backEndUrl, String sessionCookie, OMElement inboundEndpoint)
+	public static void addInboundEndpoint(String backEndUrl, String sessionCookie, OMElement inboundEndpoint)
 			throws Exception {
 		InboundAdminClient inboundAdmin = new InboundAdminClient(backEndUrl, sessionCookie);
 		inboundAdmin.addInboundEndpoint(inboundEndpoint.toString());
@@ -428,7 +430,7 @@ public class ESBTestCaseUtils {
 	 * @param inboundEndpoint
 	 * @throws Exception
 	 */
-	public void addInboundEndpointFromParams(String backEndUrl, String sessionCookie, OMElement inboundEndpoint)
+	public static void addInboundEndpointFromParams(String backEndUrl, String sessionCookie, OMElement inboundEndpoint)
 			throws Exception {
 		InboundAdminClient inboundAdmin = new InboundAdminClient(backEndUrl, sessionCookie);
 
@@ -451,7 +453,7 @@ public class ESBTestCaseUtils {
 	 * @param inboundEndpoint
 	 * @throws Exception
 	 */
-	public void updateInboundEndpoint(String backEndUrl, String sessionCookie, OMElement inboundEndpoint)
+	public static void updateInboundEndpoint(String backEndUrl, String sessionCookie, OMElement inboundEndpoint)
 			throws Exception {
 		InboundAdminClient inboundAdmin = new InboundAdminClient(backEndUrl, sessionCookie);
 
@@ -480,7 +482,7 @@ public class ESBTestCaseUtils {
 	 * @param element
 	 * @return created Inbound Endpoint parametr map
 	 */
-	private Map<String,String> generateParameterMap(OMElement element) {
+	private static Map<String,String> generateParameterMap(OMElement element) {
 
 		Map<String,String> paramMap = new HashMap<String, String>();
 		OMElement params = element.getFirstChildWithName(new QName(XMLConfigConstants.SYNAPSE_NAMESPACE,
@@ -506,7 +508,8 @@ public class ESBTestCaseUtils {
 	 * @param name          name of the inbound Endpoint
 	 * @throws Exception If an error occurs while checking for inbound
 	 */
-	public void isInboundEndpointDeployed(String backEndUrl, String sessionCookie, String name) throws Exception {
+	public static void isInboundEndpointDeployed(String backEndUrl, String sessionCookie, String name) throws
+			Exception {
 		InboundAdminClient inboundAdmin = new InboundAdminClient(backEndUrl, sessionCookie);
 		InboundEndpointDTO inboundEndpointDTO = null;
 		log.info("waiting " + SERVICE_DEPLOYMENT_DELAY + " millis for Inbound Endpoint " + name);
@@ -529,7 +532,7 @@ public class ESBTestCaseUtils {
 		Assert.assertNotNull(inboundEndpointDTO);
 	}
 
-	public void isInboundEndpointUndeployed(String backEndUrl, String sessionCookie, String name)
+	public static void isInboundEndpointUndeployed(String backEndUrl, String sessionCookie, String name)
 			throws Exception {
 		InboundAdminClient inboundAdmin = new InboundAdminClient(backEndUrl, sessionCookie);
 		InboundEndpointDTO inboundEndpointDTO = inboundAdmin.getInboundEndpointbyName(name);
@@ -537,7 +540,7 @@ public class ESBTestCaseUtils {
 	}
 
 
-	public void deleteInboundEndpointDeployed(String backEndUrl, String sessionCookie, String name)
+	public static void deleteInboundEndpointDeployed(String backEndUrl, String sessionCookie, String name)
 			throws Exception {
 		InboundAdminClient inboundAdmin = new InboundAdminClient(backEndUrl, sessionCookie);
 		inboundAdmin.removeInboundEndpoint(name);
@@ -545,7 +548,7 @@ public class ESBTestCaseUtils {
 		Assert.assertNull(inboundEndpointDTO);
 	}
 
-	public InboundEndpointDTO[] getAllInboundEndpoints(String backEndUrl, String sessionCookie)
+	public static InboundEndpointDTO[] getAllInboundEndpoints(String backEndUrl, String sessionCookie)
 			throws Exception {
 		InboundAdminClient inboundAdmin = new InboundAdminClient(backEndUrl, sessionCookie);
 		return inboundAdmin.getAllInboundEndpointNames();
@@ -558,7 +561,7 @@ public class ESBTestCaseUtils {
 	 * @param fileItems
 	 * @throws java.rmi.RemoteException
 	 */
-	public void uploadConnector(String backEndUrl, String sessionCookie, LibraryFileItem[] fileItems)
+	public static void uploadConnector(String backEndUrl, String sessionCookie, LibraryFileItem[] fileItems)
 			throws RemoteException {
 		MediationLibraryUploaderClient mediationLibraryUploaderClient = new MediationLibraryUploaderClient(
 				backEndUrl, sessionCookie);
@@ -576,7 +579,7 @@ public class ESBTestCaseUtils {
 	 * @param status
 	 * @throws java.rmi.RemoteException
 	 */
-	public void updateConnectorStatus(String backEndUrl, String sessionCookie, String libQName, String libName,
+	public static void updateConnectorStatus(String backEndUrl, String sessionCookie, String libQName, String libName,
 	                                  String packageName, String status) throws RemoteException {
 		MediationLibraryAdminServiceClient mediationLibraryAdminServiceClient = new MediationLibraryAdminServiceClient(
 				backEndUrl, sessionCookie);
@@ -590,7 +593,7 @@ public class ESBTestCaseUtils {
 	 * @return
 	 * @throws java.rmi.RemoteException
 	 */
-	public String[] getAllImports(String backEndUrl, String sessionCookie) throws RemoteException {
+	public static String[] getAllImports(String backEndUrl, String sessionCookie) throws RemoteException {
 		MediationLibraryAdminServiceClient mediationLibraryAdminServiceClient = new MediationLibraryAdminServiceClient(
 				backEndUrl, sessionCookie);
 		return mediationLibraryAdminServiceClient.getAllImports();
@@ -604,7 +607,7 @@ public class ESBTestCaseUtils {
 	 * @throws java.rmi.RemoteException
 	 * @throws org.wso2.carbon.mediation.library.stub.MediationLibraryAdminServiceException
 	 */
-	public void deleteLibrary(String backEndUrl, String sessionCookie, String liqQualifiedname)
+	public static void deleteLibrary(String backEndUrl, String sessionCookie, String liqQualifiedname)
 			throws RemoteException, MediationLibraryAdminServiceException {
 		MediationLibraryAdminServiceClient mediationLibraryAdminServiceClient = new MediationLibraryAdminServiceClient(
 				backEndUrl, sessionCookie);
@@ -618,7 +621,7 @@ public class ESBTestCaseUtils {
 	 * @param endpointConfig
 	 * @throws Exception
 	 */
-	public void addEndpoint(String backEndUrl, String sessionCookie, OMElement endpointConfig)
+	public static void addEndpoint(String backEndUrl, String sessionCookie, OMElement endpointConfig)
 			throws Exception {
 		EndPointAdminClient endPointAdminClient = new EndPointAdminClient(backEndUrl, sessionCookie);
 		endPointAdminClient.addEndPoint(endpointConfig);
@@ -635,7 +638,7 @@ public class ESBTestCaseUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public void addLocalEntry(String backEndUrl, String sessionCookie,
+	public static void addLocalEntry(String backEndUrl, String sessionCookie,
 	                          OMElement localEntryConfig) throws Exception {
 		LocalEntriesAdminClient localEntryAdminServiceClient = new LocalEntriesAdminClient(backEndUrl,
 		                                                                                   sessionCookie);
@@ -656,7 +659,7 @@ public class ESBTestCaseUtils {
 	 * @param sequenceConfig
 	 * @throws Exception
 	 */
-	public void addSequence(String backEndUrl, String sessionCookie, OMElement sequenceConfig)
+	public static void addSequence(String backEndUrl, String sessionCookie, OMElement sequenceConfig)
 			throws Exception {
 		SequenceAdminServiceClient sequenceAdminClient = new SequenceAdminServiceClient(backEndUrl,
 		                                                                                sessionCookie);
@@ -674,7 +677,7 @@ public class ESBTestCaseUtils {
 	 * @param messageStore
 	 * @throws java.rmi.RemoteException
 	 */
-	public void addMessageStore(String backEndUrl, String sessionCookie, OMElement messageStore)
+	public static void addMessageStore(String backEndUrl, String sessionCookie, OMElement messageStore)
 			throws Exception {
 		MessageStoreAdminClient messageStoreAdminClient = new MessageStoreAdminClient(backEndUrl, sessionCookie);
 		messageStoreAdminClient.addMessageStore(messageStore);
@@ -689,7 +692,7 @@ public class ESBTestCaseUtils {
 	 * @param messageProcessor
 	 * @throws java.rmi.RemoteException
 	 */
-	public void addMessageProcessor(String backEndUrl, String sessionCookie,
+	public static void addMessageProcessor(String backEndUrl, String sessionCookie,
 	                                OMElement messageProcessor)
 			throws Exception {
 		MessageProcessorClient messageProcessorClient = new MessageProcessorClient(backEndUrl, sessionCookie);
@@ -698,7 +701,7 @@ public class ESBTestCaseUtils {
 		Assert.assertTrue(isMessageProcessorDeployed(backEndUrl, sessionCookie, mProcessorName), "Message Processor deployment failed");
 	}
 
-	public void addSequenceTemplate(String backEndUrl, String sessionCookie,
+	public static void addSequenceTemplate(String backEndUrl, String sessionCookie,
 	                                OMElement sequenceTemplate) throws RemoteException {
 		SequenceTemplateAdminServiceClient sequenceTemplateAdminServiceClient = new SequenceTemplateAdminServiceClient(backEndUrl, sessionCookie);
 		sequenceTemplateAdminServiceClient.addSequenceTemplate(sequenceTemplate);
@@ -707,7 +710,7 @@ public class ESBTestCaseUtils {
 
 	}
 
-	public void addEndpointTemplate(String backEndUrl, String sessionCookie,
+	public static void addEndpointTemplate(String backEndUrl, String sessionCookie,
 	                                OMElement endpointTemplate) throws RemoteException {
 		EndpointTemplateAdminServiceClient endpointTemplateAdminServiceClient = new EndpointTemplateAdminServiceClient(backEndUrl, sessionCookie);
 		endpointTemplateAdminServiceClient.addEndpointTemplate(endpointTemplate);
@@ -716,7 +719,7 @@ public class ESBTestCaseUtils {
 
 	}
 
-	public void addAPI(String backEndUrl, String sessionCookie,
+	public static void addAPI(String backEndUrl, String sessionCookie,
 	                   OMElement api) throws RemoteException, RestApiAdminAPIException {
 		RestApiAdminClient apiAdminClient = new RestApiAdminClient(backEndUrl, sessionCookie);
 		apiAdminClient.add(api);
@@ -724,7 +727,7 @@ public class ESBTestCaseUtils {
 		Assert.assertTrue(isApiDeployed(backEndUrl, sessionCookie, apiName), "Rest Api deployment failed");
 	}
 
-	public void addPriorityExecutor(String backEndUrl, String sessionCookie,
+	public static void addPriorityExecutor(String backEndUrl, String sessionCookie,
 	                                OMElement priorityExecutor)
 			throws RemoteException {
 		PriorityMediationAdminClient priorityMediationAdminClient = new PriorityMediationAdminClient(backEndUrl, sessionCookie);
@@ -741,7 +744,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.task.stub.TaskManagementException
 	 * @throws java.rmi.RemoteException
 	 */
-	public void addScheduleTask(String backEndUrl, String sessionCookie, OMElement taskDescription)
+	public static void addScheduleTask(String backEndUrl, String sessionCookie, OMElement taskDescription)
 			throws TaskManagementException, RemoteException {
 		TaskAdminClient taskAdminClient = new TaskAdminClient(backEndUrl, sessionCookie);
 		taskAdminClient.addTask(taskDescription);
@@ -761,7 +764,7 @@ public class ESBTestCaseUtils {
 	 * @return
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isProxyDeployed(String backEndUrl, String sessionCookie, String proxyName)
+	public static boolean isProxyDeployed(String backEndUrl, String sessionCookie, String proxyName)
 			throws RemoteException {
 		log.info("waiting " + SERVICE_DEPLOYMENT_DELAY + " millis for Proxy deployment " + proxyName);
 
@@ -794,7 +797,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.endpoint.stub.types.EndpointAdminEndpointAdminException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isEndpointDeployed(String backEndUrl, String sessionCookie, String endpointName)
+	public static boolean isEndpointDeployed(String backEndUrl, String sessionCookie, String endpointName)
 			throws EndpointAdminEndpointAdminException, RemoteException {
 		EndPointAdminClient endPointAdminClient = new EndPointAdminClient(backEndUrl,
 		                                                                  sessionCookie);
@@ -834,7 +837,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.sequences.stub.types.SequenceEditorException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isMessageProcessorDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isMessageProcessorDeployed(String backEndUrl, String sessionCookie,
 	                                          String messageProcessorName)
 			throws SequenceEditorException, RemoteException {
 		MessageProcessorClient messageProcessorClient = new MessageProcessorClient(backEndUrl, sessionCookie);
@@ -874,7 +877,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.sequences.stub.types.SequenceEditorException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isSequenceDeployed(String backEndUrl, String sessionCookie, String sequenceName)
+	public static boolean isSequenceDeployed(String backEndUrl, String sessionCookie, String sequenceName)
 			throws SequenceEditorException, RemoteException {
 		SequenceAdminServiceClient sequenceAdminServiceClient = new SequenceAdminServiceClient(backEndUrl,
 		                                                                                       sessionCookie);
@@ -914,7 +917,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.sequences.stub.types.SequenceEditorException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isMessageStoreDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isMessageStoreDeployed(String backEndUrl, String sessionCookie,
 	                                      String messageStoreName)
 			throws SequenceEditorException, RemoteException {
 		MessageStoreAdminClient messageStoreAdminClient = new MessageStoreAdminClient(backEndUrl, sessionCookie);
@@ -946,7 +949,7 @@ public class ESBTestCaseUtils {
 		return isMessageStoreExist;
 	}
 
-	public boolean isSequenceTemplateDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isSequenceTemplateDeployed(String backEndUrl, String sessionCookie,
 	                                          String sequenceTemplateName) throws RemoteException {
 		SequenceTemplateAdminServiceClient sequenceTemplateAdminServiceClient = new SequenceTemplateAdminServiceClient(backEndUrl, sessionCookie);
 		log.info("waiting " + SERVICE_DEPLOYMENT_DELAY + " millis for Sequence Template " + sequenceTemplateName);
@@ -977,7 +980,7 @@ public class ESBTestCaseUtils {
 		return isSequenceTmpFound;
 	}
 
-	public boolean isEndpointTemplateDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isEndpointTemplateDeployed(String backEndUrl, String sessionCookie,
 	                                          String endpointTemplateName) throws RemoteException {
 		EndpointTemplateAdminServiceClient endpointTemplateAdminServiceClient = new EndpointTemplateAdminServiceClient(backEndUrl, sessionCookie);
 		log.info("waiting " + SERVICE_DEPLOYMENT_DELAY + " millis for Endpoint Template " + endpointTemplateName);
@@ -1008,7 +1011,7 @@ public class ESBTestCaseUtils {
 		return isEndpointTmpFound;
 	}
 
-	public boolean isApiDeployed(String backEndUrl, String sessionCookie, String apiName)
+	public static boolean isApiDeployed(String backEndUrl, String sessionCookie, String apiName)
 			throws RemoteException, RestApiAdminAPIException {
 		RestApiAdminClient apiAdminClient = new RestApiAdminClient(backEndUrl, sessionCookie);
 		log.info("waiting " + SERVICE_DEPLOYMENT_DELAY + " millis for API " + apiName);
@@ -1039,7 +1042,7 @@ public class ESBTestCaseUtils {
 		return isApiFound;
 	}
 
-	public boolean isPriorityExecutorDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isPriorityExecutorDeployed(String backEndUrl, String sessionCookie,
 	                                          String executorName)
 			throws RemoteException {
 		PriorityMediationAdminClient priorityMediationAdminClient = new PriorityMediationAdminClient(backEndUrl, sessionCookie);
@@ -1081,7 +1084,7 @@ public class ESBTestCaseUtils {
 	 * @throws java.rmi.RemoteException
 	 * @throws org.wso2.carbon.task.stub.TaskManagementException
 	 */
-	public boolean isScheduleTaskDeployed(String backEndUrl, String sessionCookie, String taskName)
+	public static boolean isScheduleTaskDeployed(String backEndUrl, String sessionCookie, String taskName)
 			throws RemoteException, TaskManagementException {
 		log.info("waiting " + SERVICE_DEPLOYMENT_DELAY + " millis for Task deployment " + taskName);
 
@@ -1113,7 +1116,7 @@ public class ESBTestCaseUtils {
 	 * @return
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isProxyServiceExist(String backEndUrl, String sessionCookie, String proxyName)
+	public static boolean isProxyServiceExist(String backEndUrl, String sessionCookie, String proxyName)
 			throws RemoteException {
 		ServiceAdminClient adminServiceService = new ServiceAdminClient(backEndUrl, sessionCookie);
 		return adminServiceService.isServiceExists(proxyName);
@@ -1129,7 +1132,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.localentry.stub.types.LocalEntryAdminException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isLocalEntryExist(String backEndUrl, String sessionCookie, String localEntryName)
+	public static boolean isLocalEntryExist(String backEndUrl, String sessionCookie, String localEntryName)
 			throws LocalEntryAdminException, RemoteException {
 		LocalEntriesAdminClient localEntryAdminServiceClient = new LocalEntriesAdminClient(backEndUrl,
 		                                                                                   sessionCookie);
@@ -1149,7 +1152,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.sequences.stub.types.SequenceEditorException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isSequenceExist(String backEndUrl, String sessionCookie, String sequenceName)
+	public static boolean isSequenceExist(String backEndUrl, String sessionCookie, String sequenceName)
 			throws SequenceEditorException, RemoteException {
 		SequenceAdminServiceClient sequenceAdminServiceClient = new SequenceAdminServiceClient(backEndUrl,
 		                                                                                       sessionCookie);
@@ -1169,7 +1172,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.endpoint.stub.types.EndpointAdminEndpointAdminException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isEndpointExist(String backEndUrl, String sessionCookie, String endpointName)
+	public static boolean isEndpointExist(String backEndUrl, String sessionCookie, String endpointName)
 			throws EndpointAdminEndpointAdminException, RemoteException {
 		EndPointAdminClient endPointAdminClient = new EndPointAdminClient(backEndUrl,
 		                                                                  sessionCookie);
@@ -1187,7 +1190,7 @@ public class ESBTestCaseUtils {
 	 * @return
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isMessageStoreExist(String backEndUrl, String sessionCookie,
+	public static boolean isMessageStoreExist(String backEndUrl, String sessionCookie,
 	                                   String messageProcessor) throws RemoteException {
 		MessageStoreAdminClient messageStoreAdminClient = new MessageStoreAdminClient(backEndUrl, sessionCookie);
 		return ArrayUtils.contains(messageStoreAdminClient.getMessageStores(), messageProcessor);
@@ -1201,42 +1204,42 @@ public class ESBTestCaseUtils {
 	 * @return
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isMessageProcessorExist(String backEndUrl, String sessionCookie,
+	public static boolean isMessageProcessorExist(String backEndUrl, String sessionCookie,
 	                                       String messageProcessor) throws RemoteException {
 		MessageProcessorClient messageProcessorClient = new MessageProcessorClient(backEndUrl, sessionCookie);
 		return ArrayUtils.contains(messageProcessorClient.getMessageProcessorNames(), messageProcessor);
 
 	}
 
-	public boolean isSequenceTemplateExist(String backEndUrl, String sessionCookie,
+	public static boolean isSequenceTemplateExist(String backEndUrl, String sessionCookie,
 	                                       String sequenceTemplate) throws RemoteException {
 		SequenceTemplateAdminServiceClient sequenceTemplateAdminServiceClient = new SequenceTemplateAdminServiceClient(backEndUrl, sessionCookie);
 		return ArrayUtils.contains(sequenceTemplateAdminServiceClient.getSequenceTemplates(), sequenceTemplate);
 
 	}
 
-	public boolean isEndpointTemplateExist(String backEndUrl, String sessionCookie,
+	public static boolean isEndpointTemplateExist(String backEndUrl, String sessionCookie,
 	                                       String endpointTemplate) throws RemoteException {
 		EndpointTemplateAdminServiceClient endpointTemplateAdminServiceClient = new EndpointTemplateAdminServiceClient(backEndUrl, sessionCookie);
 		return ArrayUtils.contains(endpointTemplateAdminServiceClient.getEndpointTemplates(), endpointTemplate);
 
 	}
 
-	public boolean isApiExist(String backEndUrl, String sessionCookie, String apiName)
+	public static boolean isApiExist(String backEndUrl, String sessionCookie, String apiName)
 			throws RemoteException, RestApiAdminAPIException {
 		RestApiAdminClient apiAdminClient = new RestApiAdminClient(backEndUrl, sessionCookie);
 		return ArrayUtils.contains(apiAdminClient.getApiNames(), apiName);
 
 	}
 
-	public boolean isPriorityExecutorExist(String backEndUrl, String sessionCookie,
+	public static boolean isPriorityExecutorExist(String backEndUrl, String sessionCookie,
 	                                       String priorityExecutorName) throws RemoteException {
 		PriorityMediationAdminClient priorityMediationAdminClient = new PriorityMediationAdminClient(backEndUrl, sessionCookie);
 		return ArrayUtils.contains(priorityMediationAdminClient.getExecutorList(), priorityExecutorName);
 
 	}
 
-	public boolean isScheduleTaskExist(String backEndUrl, String sessionCookie, String taskName)
+	public static boolean isScheduleTaskExist(String backEndUrl, String sessionCookie, String taskName)
 			throws RemoteException, TaskManagementException {
 		TaskAdminClient taskAdminClient = new TaskAdminClient(backEndUrl, sessionCookie);
 		return taskAdminClient.getScheduleTaskList().contains(taskName);
@@ -1250,7 +1253,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.proxyadmin.stub.ProxyServiceAdminProxyAdminException
 	 * @throws java.rmi.RemoteException
 	 */
-	public void deleteProxyService(String backEndUrl, String sessionCookie, String proxyServiceName)
+	public static void deleteProxyService(String backEndUrl, String sessionCookie, String proxyServiceName)
 			throws ProxyServiceAdminProxyAdminException, RemoteException {
 		ProxyServiceAdminClient proxyAdmin = new ProxyServiceAdminClient(backEndUrl, sessionCookie);
 		proxyAdmin.deleteProxy(proxyServiceName);
@@ -1264,7 +1267,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.localentry.stub.types.LocalEntryAdminException
 	 * @throws java.rmi.RemoteException
 	 */
-	public void deleteLocalEntry(String backEndUrl, String sessionCookie, String localEntryName)
+	public static void deleteLocalEntry(String backEndUrl, String sessionCookie, String localEntryName)
 			throws LocalEntryAdminException, RemoteException {
 		LocalEntriesAdminClient localEntryAdminServiceClient = new LocalEntriesAdminClient(backEndUrl,
 		                                                                                   sessionCookie);
@@ -1280,7 +1283,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.endpoint.stub.types.EndpointAdminEndpointAdminException
 	 * @throws java.rmi.RemoteException
 	 */
-	public void deleteEndpoint(String backEndUrl, String sessionCookie, String endpointName)
+	public static void deleteEndpoint(String backEndUrl, String sessionCookie, String endpointName)
 			throws EndpointAdminEndpointAdminException, RemoteException {
 		EndPointAdminClient endPointAdminClient = new EndPointAdminClient(backEndUrl,
 		                                                                  sessionCookie);
@@ -1295,7 +1298,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.sequences.stub.types.SequenceEditorException
 	 * @throws java.rmi.RemoteException
 	 */
-	public void deleteSequence(String backEndUrl, String sessionCookie, String sequenceName)
+	public static void deleteSequence(String backEndUrl, String sessionCookie, String sequenceName)
 			throws SequenceEditorException, RemoteException {
 		SequenceAdminServiceClient sequenceAdminServiceClient = new SequenceAdminServiceClient(backEndUrl,
 		                                                                                       sessionCookie);
@@ -1310,7 +1313,7 @@ public class ESBTestCaseUtils {
 	 * @param messageStore
 	 * @throws java.rmi.RemoteException
 	 */
-	public void deleteMessageStore(String backEndUrl, String sessionCookie, String messageStore)
+	public static void deleteMessageStore(String backEndUrl, String sessionCookie, String messageStore)
 			throws RemoteException, SequenceEditorException {
 		MessageStoreAdminClient messageStoreAdminClient = new MessageStoreAdminClient(backEndUrl, sessionCookie);
 		messageStoreAdminClient.deleteMessageStore(messageStore);
@@ -1323,7 +1326,7 @@ public class ESBTestCaseUtils {
 	 * @param messageProcessor
 	 * @throws java.rmi.RemoteException
 	 */
-	public void deleteMessageProcessor(String backEndUrl, String sessionCookie,
+	public static void deleteMessageProcessor(String backEndUrl, String sessionCookie,
 	                                   String messageProcessor)
 			throws RemoteException, SequenceEditorException {
 		MessageProcessorClient messageProcessorClient = new MessageProcessorClient(backEndUrl, sessionCookie);
@@ -1331,7 +1334,7 @@ public class ESBTestCaseUtils {
 		Assert.assertTrue(isMessageProcessorUnDeployed(backEndUrl, sessionCookie, messageProcessor), "Message Processor undeployment failed");
 	}
 
-	public void deleteEndpointTemplate(String backEndUrl, String sessionCookie,
+	public static void deleteEndpointTemplate(String backEndUrl, String sessionCookie,
 	                                   String endpointTemplate)
 			throws RemoteException, SequenceEditorException, EndpointAdminEndpointAdminException {
 
@@ -1340,7 +1343,7 @@ public class ESBTestCaseUtils {
 		Assert.assertTrue(isEndpointTemplateUnDeployed(backEndUrl, sessionCookie, endpointTemplate), "Endpoint Template undeployment failed");
 	}
 
-	public void deleteSequenceTemplate(String backEndUrl, String sessionCookie,
+	public static void deleteSequenceTemplate(String backEndUrl, String sessionCookie,
 	                                   String sequenceTemplateName)
 			throws RemoteException, SequenceEditorException, EndpointAdminEndpointAdminException {
 		SequenceTemplateAdminServiceClient sequenceTemplateAdminServiceClient = new SequenceTemplateAdminServiceClient(backEndUrl, sessionCookie);
@@ -1348,14 +1351,14 @@ public class ESBTestCaseUtils {
 		Assert.assertTrue(isSequenceTemplateUnDeployed(backEndUrl, sessionCookie, sequenceTemplateName), "Sequence Template undeployment failed");
 	}
 
-	public void deleteApi(String backEndUrl, String sessionCookie, String apiName)
+	public static void deleteApi(String backEndUrl, String sessionCookie, String apiName)
 			throws RemoteException, RestApiAdminAPIException {
 		RestApiAdminClient apiAdminClient = new RestApiAdminClient(backEndUrl, sessionCookie);
 		apiAdminClient.deleteApi(apiName);
 		Assert.assertTrue(isApiUnDeployed(backEndUrl, sessionCookie, apiName), "API undeployment failed");
 	}
 
-	public void deletePriorityExecutor(String backEndUrl, String sessionCookie, String executorName)
+	public static void deletePriorityExecutor(String backEndUrl, String sessionCookie, String executorName)
 			throws RemoteException {
 		PriorityMediationAdminClient priorityMediationAdminClient = new PriorityMediationAdminClient(backEndUrl, sessionCookie);
 		priorityMediationAdminClient.remove(executorName);
@@ -1371,7 +1374,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.task.stub.TaskManagementException
 	 * @throws java.rmi.RemoteException
 	 */
-	public void deleteScheduleTask(String backEndUrl, String sessionCookie, String taskName,
+	public static void deleteScheduleTask(String backEndUrl, String sessionCookie, String taskName,
 	                               String group)
 			throws TaskManagementException, RemoteException {
 		TaskAdminClient taskAdminClient = new TaskAdminClient(backEndUrl, sessionCookie);
@@ -1391,7 +1394,7 @@ public class ESBTestCaseUtils {
 	 * @throws java.rmi.RemoteException
 	 */
 
-	public boolean isProxyUnDeployed(String backEndUrl, String sessionCookie, String proxyName)
+	public static boolean isProxyUnDeployed(String backEndUrl, String sessionCookie, String proxyName)
 			throws RemoteException {
 		log.info("waiting " + SERVICE_DEPLOYMENT_DELAY + " millis for Proxy undeployment");
 		ServiceAdminClient adminServiceService = new ServiceAdminClient(backEndUrl, sessionCookie);
@@ -1413,7 +1416,7 @@ public class ESBTestCaseUtils {
 		return isServiceDeleted;
 	}
 
-	public boolean isMessageStoreUnDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isMessageStoreUnDeployed(String backEndUrl, String sessionCookie,
 	                                        String messageStoreName)
 			throws SequenceEditorException, RemoteException {
 		MessageStoreAdminClient messageStoreAdminClient = new MessageStoreAdminClient(backEndUrl, sessionCookie);
@@ -1438,7 +1441,7 @@ public class ESBTestCaseUtils {
 	}
 
 
-	public boolean isMessageProcessorUnDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isMessageProcessorUnDeployed(String backEndUrl, String sessionCookie,
 	                                            String messageProcessorName)
 			throws SequenceEditorException, RemoteException {
 		MessageProcessorClient messageProcessorClient = new MessageProcessorClient(backEndUrl, sessionCookie);
@@ -1470,7 +1473,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.localentry.stub.types.LocalEntryAdminException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isLocalEntryDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isLocalEntryDeployed(String backEndUrl, String sessionCookie,
 	                                    String localEntryName)
 			throws LocalEntryAdminException, RemoteException {
 		LocalEntriesAdminClient localEntryAdminServiceClient = new LocalEntriesAdminClient(backEndUrl,
@@ -1511,7 +1514,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.localentry.stub.types.LocalEntryAdminException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isLocalEntryUnDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isLocalEntryUnDeployed(String backEndUrl, String sessionCookie,
 	                                      String localEntryName)
 			throws LocalEntryAdminException, RemoteException {
 		LocalEntriesAdminClient localEntryAdminServiceClient = new LocalEntriesAdminClient(backEndUrl,
@@ -1544,7 +1547,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.sequences.stub.types.SequenceEditorException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isSequenceUnDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isSequenceUnDeployed(String backEndUrl, String sessionCookie,
 	                                    String sequenceName)
 			throws SequenceEditorException, RemoteException {
 		SequenceAdminServiceClient sequenceAdminServiceClient = new SequenceAdminServiceClient(backEndUrl,
@@ -1577,7 +1580,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.endpoint.stub.types.EndpointAdminEndpointAdminException
 	 * @throws java.rmi.RemoteException
 	 */
-	public boolean isEndpointUnDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isEndpointUnDeployed(String backEndUrl, String sessionCookie,
 	                                    String endpointName)
 			throws EndpointAdminEndpointAdminException, RemoteException {
 		EndPointAdminClient endPointAdminClient = new EndPointAdminClient(backEndUrl,
@@ -1601,7 +1604,7 @@ public class ESBTestCaseUtils {
 		return isEndpointUnDeployed;
 	}
 
-	public boolean isEndpointTemplateUnDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isEndpointTemplateUnDeployed(String backEndUrl, String sessionCookie,
 	                                            String endpointTemplateName)
 			throws EndpointAdminEndpointAdminException, RemoteException {
 		EndpointTemplateAdminServiceClient endpointTemplateAdminServiceClient = new EndpointTemplateAdminServiceClient(backEndUrl, sessionCookie);
@@ -1624,7 +1627,7 @@ public class ESBTestCaseUtils {
 		return isEndpointTemplateUnDeployed;
 	}
 
-	public boolean isSequenceTemplateUnDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isSequenceTemplateUnDeployed(String backEndUrl, String sessionCookie,
 	                                            String sequenceTemplateName)
 			throws EndpointAdminEndpointAdminException, RemoteException {
 		SequenceTemplateAdminServiceClient sequenceTemplateAdminServiceClient = new SequenceTemplateAdminServiceClient(backEndUrl, sessionCookie);
@@ -1647,7 +1650,7 @@ public class ESBTestCaseUtils {
 		return isSequenceTemplateUnDeployed;
 	}
 
-	public boolean isApiUnDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isApiUnDeployed(String backEndUrl, String sessionCookie,
 	                               String apiName)
 			throws RemoteException, RestApiAdminAPIException {
 		RestApiAdminClient apiAdminClient = new RestApiAdminClient(backEndUrl, sessionCookie);
@@ -1670,7 +1673,7 @@ public class ESBTestCaseUtils {
 		return isApiUnDeployed;
 	}
 
-	public boolean isPriorityExecutorUnDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isPriorityExecutorUnDeployed(String backEndUrl, String sessionCookie,
 	                                            String executorName)
 			throws RemoteException {
 		PriorityMediationAdminClient priorityMediationAdminClient = new PriorityMediationAdminClient(backEndUrl, sessionCookie);
@@ -1703,7 +1706,7 @@ public class ESBTestCaseUtils {
 	 * @throws java.rmi.RemoteException
 	 * @throws org.wso2.carbon.task.stub.TaskManagementException
 	 */
-	public boolean isScheduleTaskUnDeployed(String backEndUrl, String sessionCookie,
+	public static boolean isScheduleTaskUnDeployed(String backEndUrl, String sessionCookie,
 	                                        String taskName)
 			throws RemoteException, TaskManagementException {
 		log.info("waiting " + SERVICE_DEPLOYMENT_DELAY + " millis for Task Undeployment " + taskName);
@@ -1737,7 +1740,7 @@ public class ESBTestCaseUtils {
 	 * @throws org.wso2.carbon.endpoint.stub.types.EndpointAdminEndpointAdminException
 	 * @throws org.wso2.carbon.sequences.stub.types.SequenceEditorException
 	 */
-	public void verifySynapseDeployment(OMElement synapseConfig, String backendURL,
+	public static void verifySynapseDeployment(OMElement synapseConfig, String backendURL,
 	                                    String sessionCookie)
 			throws LocalEntryAdminException, RemoteException, EndpointAdminEndpointAdminException,
 			       SequenceEditorException, RestApiAdminAPIException {
@@ -1814,7 +1817,7 @@ public class ESBTestCaseUtils {
 
 	}
 
-	public void deleteArtifact(OMElement synapseConfig, String backendURL,
+	public static void deleteArtifact(OMElement synapseConfig, String backendURL,
 	                           String sessionCookie)
 			throws Exception {
 		ProxyServiceAdminClient proxyAdmin = new ProxyServiceAdminClient(backendURL, sessionCookie);
@@ -1931,7 +1934,7 @@ public class ESBTestCaseUtils {
 
 	}
 
-	public void deploySynapseArtifactsFromFileSystem(String directoryPath, String backendURL,
+	public static void deploySynapseArtifactsFromFileSystem(String directoryPath, String backendURL,
 	                                                 String sessionCookie) throws Exception {
 
 		File[] fileList = new File(directoryPath).listFiles();
@@ -2127,7 +2130,7 @@ public class ESBTestCaseUtils {
 	 * @param fullPath path to file
 	 * @return true if file has no contents
 	 */
-	public boolean isFileEmpty(String fullPath) {
+	public static boolean isFileEmpty(String fullPath) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fullPath));
 			if (br.readLine() == null) {

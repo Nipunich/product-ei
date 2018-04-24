@@ -6,6 +6,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.clients.axis2client.AxisServiceClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
@@ -22,7 +23,7 @@ public class ESBJAVA2907TestCase extends ESBIntegrationTest {
 	@BeforeClass(alwaysRun = true)
 	protected void init() throws Exception {
 		super.init();
-		OMElement synapse = esbUtils
+		OMElement synapse = ESBTestCaseUtils
 				.loadResource("/artifacts/ESB/synapseconfig/messageStore/ESBJAVA-2907StoreOmElementsAsProperties.xml");
 		updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 	}

@@ -34,6 +34,7 @@ import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.esb.integration.services.jaxrs.customersample.CustomerConfig;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class MSMPJsonRetryTestCase extends ESBIntegrationTest {
 
         // START THE ESB
         super.init();
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/MSMP_JSON_RETRY.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/MSMP_JSON_RETRY.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
     }
 

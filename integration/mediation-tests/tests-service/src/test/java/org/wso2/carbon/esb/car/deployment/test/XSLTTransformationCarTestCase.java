@@ -31,6 +31,7 @@ import org.wso2.carbon.registry.resource.stub.ResourceAdminServiceExceptionExcep
 import org.wso2.carbon.registry.resource.stub.common.xsd.ResourceData;
 import org.wso2.esb.integration.common.clients.registry.ResourceAdminServiceClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.activation.DataHandler;
 import java.io.File;
@@ -66,9 +67,9 @@ public class XSLTTransformationCarTestCase extends ESBIntegrationTest {
 
     @Test(groups = {"wso2.esb"}, description = "test endpoint deployment from car file")
     public void artifactDeploymentAndServiceInvocation() throws Exception {
-        Assert.assertTrue(esbUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "stockQuoteServiceEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "stockQuoteServiceEndpoint")
                 , "AddressEndpoint Endpoint deployment failed");
-        Assert.assertTrue(esbUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "xsltTransformationProxy")
+        Assert.assertTrue(ESBTestCaseUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "xsltTransformationProxy")
                 , "Pass Through Proxy service deployment failed");
         Assert.assertTrue(isResourceExist("/_system/config/transform.xslt"), "transform.xslt not found on registry");
         Assert.assertTrue(isResourceExist("/_system/config/transform_back.xslt"), "transform.xslt not found on registry");
@@ -95,9 +96,9 @@ public class XSLTTransformationCarTestCase extends ESBIntegrationTest {
         isCarFileUploaded = false;
         Assert.assertTrue(isCarFileUnDeployed(carFileName), "Car file undeployment failed");
         TimeUnit.SECONDS.sleep(5);
-        Assert.assertTrue(esbUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "stockQuoteServiceEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "stockQuoteServiceEndpoint")
                 , "stockQuoteServiceEndpoint Endpoint deployment failed");
-        Assert.assertTrue(esbUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "xsltTransformationProxy")
+        Assert.assertTrue(ESBTestCaseUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "xsltTransformationProxy")
                 , "xsltTransformationProxy Proxy service deployment failed");
 
         Assert.assertFalse(isResourceExist("/_system/config/transform.xslt"), "transform.xslt deployed by car file not removed from registry");

@@ -25,6 +25,7 @@ import org.wso2.carbon.integration.common.admin.client.CarbonAppUploaderClient;
 import org.wso2.carbon.service.mgt.stub.types.carbon.ServiceMetaData;
 import org.wso2.esb.integration.common.clients.service.mgt.ServiceAdminClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.activation.DataHandler;
 import java.io.File;
@@ -60,7 +61,7 @@ public class ESBJAVA3438CAppArtifactIndicationTestCase extends ESBIntegrationTes
     public void testProxyServiceIsCApp() throws Exception {
         Thread.sleep(6000);
         Assert.assertTrue(
-                esbUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), sessionCookie, "sampleCustomProxy")
+                ESBTestCaseUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), sessionCookie, "sampleCustomProxy")
                 , "transform Proxy service deployment failed");
         TimeUnit.SECONDS.sleep(5);
         ServiceMetaData serviceMetaData = serviceAdminClient.getServicesData(service);

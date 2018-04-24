@@ -32,6 +32,7 @@ import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.clients.inbound.endpoint.InboundAdminClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 import org.wso2.esb.integration.common.utils.servers.ActiveMQServer;
@@ -52,7 +53,7 @@ public class JMSInboundMessagePollingTestCase extends ESBIntegrationTest{
 		serverConfigurationManager =
 				new ServerConfigurationManager(new AutomationContext("ESB", TestUserMode.SUPER_TENANT_ADMIN));
 		OMElement synapse =
-				esbUtils.loadResource("/artifacts/ESB/jms/inbound/transport/jms_transport_proxy_service.xml");
+				ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/inbound/transport/jms_transport_proxy_service.xml");
 		updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 		inboundAdminClient = new InboundAdminClient(context.getContextUrls().getBackEndUrl(),getSessionCookie());
 		logViewerClient = new LogViewerClient(contextUrls.getBackEndUrl(), getSessionCookie());

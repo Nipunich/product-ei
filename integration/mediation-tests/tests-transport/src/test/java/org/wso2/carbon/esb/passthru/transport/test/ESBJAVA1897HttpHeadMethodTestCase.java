@@ -59,9 +59,8 @@ public class ESBJAVA1897HttpHeadMethodTestCase extends  ESBIntegrationTest{
         String relativePath = "artifacts" + File.separator + "ESB" +
                 File.separator + "synapseconfig" + File.separator + "rest" +
                 File.separator + "rest-service-proxy.xml";
-        ESBTestCaseUtils util = new ESBTestCaseUtils();
         relativePath = relativePath.replaceAll("[\\\\/]", File.separator);
-        OMElement proxyConfig = util.loadResource(relativePath);
+        OMElement proxyConfig = ESBTestCaseUtils.loadResource(relativePath);
         addProxyService(proxyConfig);
         
     }

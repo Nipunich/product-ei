@@ -37,6 +37,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.automation.engine.annotations.ExecutionEnvironment;
 import org.wso2.carbon.automation.engine.annotations.SetEnvironment;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 import org.wso2.carbon.proxyadmin.stub.ProxyServiceAdminProxyAdminException;
 import org.wso2.carbon.utils.ServerConstants;
@@ -272,9 +273,9 @@ public class ESBJAVA3470 extends ESBIntegrationTest {
 
     protected void addProxyService(OMElement proxyConfig) throws Exception {
         String proxyName = proxyConfig.getAttributeValue(new QName("name"));
-        if (esbUtils.isProxyServiceExist(context.getContextUrls().getBackEndUrl(), sessionCookie, proxyName)) {
-            esbUtils.deleteProxyService(context.getContextUrls().getBackEndUrl(), sessionCookie, proxyName);
+        if (ESBTestCaseUtils.isProxyServiceExist(context.getContextUrls().getBackEndUrl(), sessionCookie, proxyName)) {
+            ESBTestCaseUtils.deleteProxyService(context.getContextUrls().getBackEndUrl(), sessionCookie, proxyName);
         }
-        esbUtils.addProxyService(context.getContextUrls().getBackEndUrl(), sessionCookie, setEndpoints(proxyConfig));
+        ESBTestCaseUtils.addProxyService(context.getContextUrls().getBackEndUrl(), sessionCookie, setEndpoints(proxyConfig));
     }
 }

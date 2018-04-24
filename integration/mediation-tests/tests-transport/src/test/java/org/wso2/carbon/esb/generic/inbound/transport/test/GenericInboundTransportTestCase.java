@@ -27,6 +27,7 @@ import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.clients.inbound.endpoint.InboundAdminClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 
@@ -48,7 +49,7 @@ public class GenericInboundTransportTestCase extends ESBIntegrationTest {
 		serverConfigurationManager.copyToComponentLib(new File(getClass().getResource(JAR_LOCATION + File.separator +
 																					  CLASS_JAR).toURI()));
 		OMElement synapse =
-				esbUtils.loadResource("/artifacts/ESB/generic/inbound/transport/generic_inbound_transport_config.xml");
+				ESBTestCaseUtils.loadResource("/artifacts/ESB/generic/inbound/transport/generic_inbound_transport_config.xml");
 		updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 		serverConfigurationManager.restartGracefully();
 

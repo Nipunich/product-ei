@@ -26,6 +26,7 @@ import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.extensions.servers.httpserver.SimpleHttpClient;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
@@ -45,7 +46,7 @@ public class ESBJAVA3656MSMPTestCase extends ESBIntegrationTest {
 	protected void init() throws Exception {
 		// START THE ESB
 		super.init();
-		OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/ESBJAVA-3656_MessageStore.xml");
+		OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/ESBJAVA-3656_MessageStore.xml");
 		updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 
 		context = new AutomationContext("ESB", TestUserMode.SUPER_TENANT_ADMIN);
@@ -80,7 +81,7 @@ public class ESBJAVA3656MSMPTestCase extends ESBIntegrationTest {
 				                       "jms/transport/axis2config/activemq/custom_server_name/axis2.xml").getPath()));
 		super.init();
 
-		OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/ESBJAVA-3656_MessageProcessor.xml");
+		OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/ESBJAVA-3656_MessageProcessor.xml");
 		updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 
 		logViewerClient = new LogViewerClient(contextUrls.getBackEndUrl(),getSessionCookie());

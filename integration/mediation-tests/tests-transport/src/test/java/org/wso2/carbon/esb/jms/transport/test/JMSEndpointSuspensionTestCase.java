@@ -9,6 +9,7 @@ import org.wso2.esb.integration.common.clients.endpoint.EndPointAdminClient;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.client.JMSQueueMessageProducer;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.controller.config.JMSBrokerConfigurationProvider;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 
 /**
@@ -20,7 +21,7 @@ public class JMSEndpointSuspensionTestCase extends ESBIntegrationTest {
 //    @BeforeClass(alwaysRun = true)
     public void deployService() throws Exception {
         super.init();
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/jms_transport_jms_suspension.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/jms_transport_jms_suspension.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
         endPointAdminClient = new EndPointAdminClient(contextUrls.getBackEndUrl(), getSessionCookie());
     }

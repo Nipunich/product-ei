@@ -24,6 +24,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.clients.SecureServiceClient;
 
 import javax.xml.stream.XMLStreamException;
@@ -67,7 +68,7 @@ public class HttpsInboundTransportTenantTestCase extends ESBIntegrationTest {
         String path = "artifacts" + File.separator + "ESB" + File.separator
                       + "https.inbound.transport" + File.separator + fileName;
         try {
-            synapseConfig = esbUtils.loadResource(path);
+            synapseConfig = ESBTestCaseUtils.loadResource(path);
         } catch (FileNotFoundException e) {
             throw new Exception("File Location " + path + " may be incorrect", e);
         } catch (XMLStreamException e) {

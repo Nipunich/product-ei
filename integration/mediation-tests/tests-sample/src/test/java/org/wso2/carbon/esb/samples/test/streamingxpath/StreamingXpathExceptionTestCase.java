@@ -49,8 +49,7 @@ public class StreamingXpathExceptionTestCase extends ESBIntegrationTest {
         super.init();
         String relativePath = "artifacts" + File.separator + "ESB" + File.separator + "streamingxpath" +
                 File.separator + "StreamingException.xml";
-        ESBTestCaseUtils util = new ESBTestCaseUtils();
-        OMElement proxyConfig = util.loadResource(relativePath);
+        OMElement proxyConfig = ESBTestCaseUtils.loadResource(relativePath);
 
         try {
             addProxyService(proxyConfig);

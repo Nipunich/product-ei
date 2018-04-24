@@ -31,9 +31,8 @@ import java.io.FileNotFoundException;
 public class RestEndpointSetter {
     public static OMElement setEndpoint(String relativePath)
             throws XMLStreamException, FileNotFoundException, XPathExpressionException {
-        ESBTestCaseUtils util = new ESBTestCaseUtils();
         relativePath = relativePath.replaceAll("[\\\\/]", File.separator);
-        OMElement synapse = util.loadResource(relativePath);
+        OMElement synapse = ESBTestCaseUtils.loadResource(relativePath);
         //if builder is enable, keep current configuration
         if (TestConfigurationProvider.isIntegration()) {
             return synapse;

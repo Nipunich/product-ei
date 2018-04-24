@@ -28,6 +28,7 @@ import org.wso2.carbon.esb.jms.utils.JMSBroker;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 import org.wso2.esb.integration.common.utils.Utils;
 import org.wso2.esb.integration.common.utils.clients.axis2client.AxisServiceClient;
@@ -63,7 +64,7 @@ public class JMSSenderStaleConnectionsTestCase extends ESBIntegrationTest {
         startBroker();
 
         /* uploadSynapseConfig (Proxy) */
-        OMElement synapse = esbUtils.loadResource("artifacts/ESB/jms/transport/JMSSenderStaleConnectionsTestProxy.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("artifacts/ESB/jms/transport/JMSSenderStaleConnectionsTestProxy.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 
         logViewerClient = new LogViewerClient(contextUrls.getBackEndUrl(), getSessionCookie());

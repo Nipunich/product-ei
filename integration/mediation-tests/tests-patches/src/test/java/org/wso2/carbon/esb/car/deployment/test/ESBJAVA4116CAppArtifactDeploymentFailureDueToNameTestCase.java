@@ -22,6 +22,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.activation.DataHandler;
 import java.io.File;
@@ -48,7 +49,7 @@ public class ESBJAVA4116CAppArtifactDeploymentFailureDueToNameTestCase extends E
     public void testSequenceDeployed() throws Exception {
         Thread.sleep(6000);
         org.testng.Assert.assertTrue(
-                esbUtils.isSequenceDeployed(contextUrls.getBackEndUrl(), getSessionCookie(),
+                ESBTestCaseUtils.isSequenceDeployed(contextUrls.getBackEndUrl(), getSessionCookie(),
                         "MySequenceDomain")
                 , "ERROR - CappAxis2Deployer Error while deploying carbon application");
     }

@@ -9,6 +9,7 @@ import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
@@ -140,7 +141,7 @@ public class HttpInboundDispatchTestCase extends ESBIntegrationTest {
                 + "http.inbound.transport" + File.separator + "dispatch" + File.separator + directory + File.separator +
                 fileName;
         try {
-            synapseConfig = esbUtils.loadResource(path);
+            synapseConfig = ESBTestCaseUtils.loadResource(path);
         } catch (FileNotFoundException e) {
             throw new Exception("File Location " + path + " may be incorrect", e);
         } catch (XMLStreamException e) {

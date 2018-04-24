@@ -28,6 +28,7 @@ import org.wso2.carbon.esb.MessageBrokerConfigurationProvider;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import java.io.File;
 
@@ -45,11 +46,11 @@ public class ESBJAVA4863JMSTransactionRollbackTestCase extends ESBIntegrationTes
         super.init();
         loadESBConfigurationFromClasspath("artifacts" + File.separator + "ESB"
                                           + File.separator + "synapseconfig" + File.separator + "ESBJAVA4863synapseconfig.xml");
-        OMElement playGroundInboundEp = esbUtils.loadResource("artifacts" + File.separator + "ESB"
+        OMElement playGroundInboundEp = ESBTestCaseUtils.loadResource("artifacts" + File.separator + "ESB"
                                                               + File.separator + "synapseconfig"
                                                               + File.separator + "ESBJAVA4863playground-inbound.xml" );
 
-        OMElement jmsInboundEp = esbUtils.loadResource("artifacts" + File.separator + "ESB"
+        OMElement jmsInboundEp = ESBTestCaseUtils.loadResource("artifacts" + File.separator + "ESB"
                                                               + File.separator + "synapseconfig"
                                                               + File.separator + "ESBJAVA4863jmsinbound.xml" );
         addInboundEndpoint(playGroundInboundEp);

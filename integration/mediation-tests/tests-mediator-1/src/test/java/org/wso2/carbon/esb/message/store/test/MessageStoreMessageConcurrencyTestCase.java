@@ -27,6 +27,7 @@ import org.wso2.esb.integration.common.clients.mediation.MessageStoreAdminClient
 import org.wso2.esb.integration.common.utils.clients.stockquoteclient.StockQuoteClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
 import org.wso2.carbon.message.store.stub.MessageInfo;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import java.util.ArrayList;
 
@@ -130,7 +131,7 @@ public class MessageStoreMessageConcurrencyTestCase extends ESBIntegrationTest {
     // delete the message store
     public void clear() throws Exception {
         if (isMessageStoreCreated) {
-            esbUtils.deleteMessageStore(contextUrls.getBackEndUrl(), getSessionCookie(), MESSAGE_STORE_NAME);
+            ESBTestCaseUtils.deleteMessageStore(contextUrls.getBackEndUrl(), getSessionCookie(), MESSAGE_STORE_NAME);
         }
     }
 

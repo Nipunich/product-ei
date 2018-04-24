@@ -31,6 +31,7 @@ import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.clients.logging.LoggingAdminClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 import org.wso2.esb.integration.services.jaxrs.customersample.CustomerConfig;
 
@@ -68,7 +69,7 @@ public class MSMPCronForwarderCase extends ESBIntegrationTest {
     public void testMessageProcessorCronForwader() throws Exception {
         logAdmin.updateLoggerData("org.apache.synapse", LoggingAdminClient.logLevel.DEBUG.name(), true, false);
 
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/MSMP_CRON_WITH_FORWARDER.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/MSMP_CRON_WITH_FORWARDER.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 
         // SEND THE REQUEST

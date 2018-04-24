@@ -29,6 +29,7 @@ import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
 import org.wso2.esb.integration.common.utils.servers.ActiveMQServer;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.jms.JMSException;
 
@@ -48,11 +49,11 @@ public class JMSInboundTransactionTestCase extends ESBIntegrationTest {
 		super.init();
 
 		OMElement synapse =
-				esbUtils.loadResource(
+                ESBTestCaseUtils.loadResource(
 						"/artifacts/ESB/jms/inbound/transport/jms_inbound_transaction.xml");
 		updateESBConfiguration(synapse);
 		message = String.valueOf(
-				esbUtils.loadResource("artifacts/ESB/jms/inbound/transport/message.xml"));
+                ESBTestCaseUtils.loadResource("artifacts/ESB/jms/inbound/transport/message.xml"));
 		logViewerClient = new LogViewerClient(contextUrls.getBackEndUrl(), getSessionCookie());
 	}
 
@@ -75,7 +76,7 @@ public class JMSInboundTransactionTestCase extends ESBIntegrationTest {
 			sender.disconnect();
 		}
 		try {
-			addInboundEndpoint(esbUtils.loadResource(
+			addInboundEndpoint(ESBTestCaseUtils.loadResource(
 					"artifacts/ESB/jms/inbound/transport/jms_commit_synapse.xml"));
 			Thread.sleep(10000);
 		} catch (JMSException e) {
@@ -107,7 +108,7 @@ public class JMSInboundTransactionTestCase extends ESBIntegrationTest {
 		} finally {
 			sender.disconnect();
 		}
-		addInboundEndpoint(esbUtils.loadResource(
+		addInboundEndpoint(ESBTestCaseUtils.loadResource(
 				"artifacts/ESB/jms/inbound/transport/jms_rollback_synapse.xml"));
 		Thread.sleep(8000);
 		successValue = checkForQueue("Rollbacked");

@@ -28,6 +28,7 @@ import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.client.JMSQueueMessageProducer;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.controller.config.JMSBrokerConfigurationProvider;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 import org.wso2.carbon.utils.FileUtil;
 import org.wso2.carbon.utils.ServerConstants;
@@ -148,7 +149,7 @@ public class PropertyIntegrationAxis2PropertiesTestCase extends ESBIntegrationTe
             }
         }
 
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/mediatorconfig/property/" +
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/mediatorconfig/property/" +
                                                   "ConcurrentConsumers.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 

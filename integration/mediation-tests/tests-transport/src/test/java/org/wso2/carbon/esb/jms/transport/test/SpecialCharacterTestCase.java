@@ -31,6 +31,7 @@ import org.wso2.carbon.automation.extensions.servers.httpserver.RequestIntercept
 import org.wso2.carbon.automation.extensions.servers.httpserver.SimpleHttpServer;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 
 import java.io.File;
@@ -65,7 +66,7 @@ public class SpecialCharacterTestCase extends ESBIntegrationTest {
         super.init();
 
         updateESBConfiguration(JMSEndpointManager.setConfigurations(
-                esbUtils.loadResource(File.separator + "artifacts" + File.separator + "ESB"
+                ESBTestCaseUtils.loadResource(File.separator + "artifacts" + File.separator + "ESB"
                                       + File.separator + "synapseconfig" + File.separator
                                       + "messageStore" + File.separator + "special_character.xml")));
 

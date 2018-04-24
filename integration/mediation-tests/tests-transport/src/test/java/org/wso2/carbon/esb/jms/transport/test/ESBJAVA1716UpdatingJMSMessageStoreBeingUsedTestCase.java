@@ -27,6 +27,7 @@ import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.esb.integration.common.clients.mediation.MessageStoreAdminClient;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.client.JMSQueueMessageConsumer;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.controller.config.JMSBrokerConfigurationProvider;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.clients.axis2client.AxisServiceClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
@@ -50,7 +51,7 @@ public class ESBJAVA1716UpdatingJMSMessageStoreBeingUsedTestCase extends ESBInte
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        synapseConfig = esbUtils.loadResource("/artifacts/ESB/jms/transport/ESBJAVA-1716_messageStore.xml");
+        synapseConfig = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/ESBJAVA-1716_messageStore.xml");
         synapseConfig = JMSEndpointManager.setConfigurations(synapseConfig);
         messageStoreAdminClient = new MessageStoreAdminClient(contextUrls.getBackEndUrl(),getSessionCookie());
         logViewer = new LogViewerClient(contextUrls.getBackEndUrl(), getSessionCookie());
@@ -85,7 +86,7 @@ public class ESBJAVA1716UpdatingJMSMessageStoreBeingUsedTestCase extends ESBInte
         messageStoreAdminClient.updateMessageStore(synapseConfig.getFirstChildWithName(
                 new QName(synapseConfiguration.getNamespace().getNamespaceURI(), "messageStore")));
         Thread.sleep(5000);
-        esbUtils.isMessageStoreDeployed(contextUrls.getBackEndUrl(), getSessionCookie(), messageStoreName);
+        ESBTestCaseUtils.isMessageStoreDeployed(contextUrls.getBackEndUrl(), getSessionCookie(), messageStoreName);
         LogEvent[] logs = logViewer.getAllSystemLogs();
         int afterLogSize = logs.length;
 

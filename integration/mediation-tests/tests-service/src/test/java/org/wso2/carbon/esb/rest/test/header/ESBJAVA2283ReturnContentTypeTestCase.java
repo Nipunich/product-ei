@@ -47,9 +47,8 @@ public class ESBJAVA2283ReturnContentTypeTestCase extends ESBIntegrationTest {
     public void init() throws Exception {
 	    super.init();
 	    String relativePath = "/artifacts/ESB/synapseconfig/esbjava2283/api.xml";
-	    ESBTestCaseUtils util = new ESBTestCaseUtils();
 	    relativePath = relativePath.replaceAll("[\\\\/]", File.separator);
-	    OMElement apiConfig = util.loadResource(relativePath);
+	    OMElement apiConfig = ESBTestCaseUtils.loadResource(relativePath);
 	    addApi(apiConfig);
     }
 

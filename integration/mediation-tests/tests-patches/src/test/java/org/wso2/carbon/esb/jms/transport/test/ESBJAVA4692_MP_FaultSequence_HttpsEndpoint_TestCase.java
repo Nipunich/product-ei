@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 import org.wso2.esb.integration.common.utils.clients.axis2client.AxisServiceClient;
 
@@ -34,7 +35,7 @@ public class ESBJAVA4692_MP_FaultSequence_HttpsEndpoint_TestCase extends ESBInte
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        OMElement synapse = esbUtils.
+        OMElement synapse = ESBTestCaseUtils.
                 loadResource("/artifacts/ESB/jms/transport/ESBJAVA4692_MP_FaultSequence.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
     }

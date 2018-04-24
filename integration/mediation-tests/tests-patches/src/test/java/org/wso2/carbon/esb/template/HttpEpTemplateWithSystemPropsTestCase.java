@@ -49,14 +49,12 @@ public class HttpEpTemplateWithSystemPropsTestCase {
 	private final static String BACKEND_URL = "https://localhost:" + SERVER_PORT + "/services/";
 	private final static String API_URL = "http://localhost:" + (8280 + OFFSET)
 			+ "/HttpTemplateTestAPI/SimpleStockQuoteService";
-	ESBTestCaseUtils esbUtils;
 	CarbonTestServerManager server2;
 	
 	@SetEnvironment(executionEnvironments = { ExecutionEnvironment.STANDALONE })
 	@BeforeClass(groups = { "wso2.esb" })
 	public void init() throws Exception {
 		context = new AutomationContext();
-		esbUtils = new ESBTestCaseUtils();
 		startupParameterMap.put("-DportOffset", String.valueOf(OFFSET));
 		startupParameterMap.put("-Dhname", HOST);
 		startupParameterMap.put("startupScript", "integrator");
@@ -94,8 +92,8 @@ public class HttpEpTemplateWithSystemPropsTestCase {
 		String relativeFilePath = File.separator + "artifacts" + File.separator + "ESB"
 				+ File.separator + "template" + File.separator + "httpEpTemplateTest.xml";
 		relativeFilePath = relativeFilePath.replaceAll("[\\\\/]", File.separator);
-		OMElement synapseConfig = esbUtils.loadResource(relativeFilePath);
-		esbUtils.updateESBConfiguration(synapseConfig, BACKEND_URL, sessionCookie);
+		OMElement synapseConfig = ESBTestCaseUtils.loadResource(relativeFilePath);
+		ESBTestCaseUtils.updateESBConfiguration(synapseConfig, BACKEND_URL, sessionCookie);
 	}
 
 }

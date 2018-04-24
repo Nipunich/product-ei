@@ -27,6 +27,7 @@ import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.carbon.proxyadmin.stub.types.carbon.ProxyData;
 import org.wso2.esb.integration.common.clients.proxy.admin.ProxyServiceAdminClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import java.io.File;
 
@@ -48,7 +49,7 @@ public class ESBJAVA4540PinnedServerParameterTestCase extends ESBIntegrationTest
 
     @Test(groups = "wso2.esb", description = "Deploying proxy when the pinnedServer is having another instance name")
     public void deployProxyService() throws Exception {
-        OMElement proxyConfig = esbUtils.loadResource(File.separator + "artifacts" + File.separator + "ESB"
+        OMElement proxyConfig = ESBTestCaseUtils.loadResource(File.separator + "artifacts" + File.separator + "ESB"
                                                       + File.separator + "proxyconfig" + File.separator + "proxy"
                                                       + File.separator + "proxyservice"
                                                       + File.separator + "proxyWithPinnedServer.xml");
@@ -69,7 +70,7 @@ public class ESBJAVA4540PinnedServerParameterTestCase extends ESBIntegrationTest
         }
         Assert.assertTrue(isLogMessageFound, "Log message not found in the console log");
         //proxy service should not be deployed since the pinnedServer does not contain this server name
-        Assert.assertFalse(esbUtils.isProxyDeployed(contextUrls.getBackEndUrl(), getSessionCookie()
+        Assert.assertFalse(ESBTestCaseUtils.isProxyDeployed(contextUrls.getBackEndUrl(), getSessionCookie()
                 , proxyServiceName), "Proxy service deployed successfully");
     }
 
@@ -98,7 +99,7 @@ public class ESBJAVA4540PinnedServerParameterTestCase extends ESBIntegrationTest
         }
         Assert.assertTrue(isLogMessageFound, "Log message not found in the console log");
         //proxy service should not be deployed since the pinnedServer does not contain this server name
-        Assert.assertFalse(esbUtils.isProxyDeployed(contextUrls.getBackEndUrl(), getSessionCookie()
+        Assert.assertFalse(ESBTestCaseUtils.isProxyDeployed(contextUrls.getBackEndUrl(), getSessionCookie()
                 , proxyServiceName), "Proxy service deployed successfully");
     }
 
