@@ -26,6 +26,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 import org.wso2.esb.integration.common.utils.clients.axis2client.AxisServiceClient;
 import org.wso2.esb.integration.common.utils.servers.ActiveMQServer;
@@ -40,7 +41,7 @@ public class CalloutJMSHeadersTestCase extends ESBIntegrationTest {
     protected void init() throws Exception {
         activeMQServer.startJMSBrokerAndConfigureESB();
         super.init();
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/mediatorconfig/callout/callout_jms_headers.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/mediatorconfig/callout/callout_jms_headers.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 
     }

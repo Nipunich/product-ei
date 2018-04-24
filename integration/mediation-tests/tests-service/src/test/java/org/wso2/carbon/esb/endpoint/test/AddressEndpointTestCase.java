@@ -124,9 +124,8 @@ public class AddressEndpointTestCase extends ESBIntegrationTest {
     public void testSendingToInvalidPropertyAddressEndpoint()
             throws XMLStreamException, FileNotFoundException, AxisFault, XPathExpressionException {
         ProxyServiceAdminClient proxyAdmin = new ProxyServiceAdminClient(context.getContextUrls().getBackEndUrl(), getSessionCookie());
-        ESBTestCaseUtils testUtil = new ESBTestCaseUtils();
         try {
-            proxyAdmin.addProxyService(testUtil.loadResource("/artifacts/ESB/endpoint/addressEndpointConfig/invalidPropertyAddressEndPoint.xml"));
+            proxyAdmin.addProxyService(ESBTestCaseUtils.loadResource("/artifacts/ESB/endpoint/addressEndpointConfig/invalidPropertyAddressEndPoint.xml"));
             Assert.fail("Proxy Deployment must failed due to Unsupported scope. but proxy deployment success");
         } catch (Exception e) {
             Assert.assertEquals(e.getCause().getMessage(),

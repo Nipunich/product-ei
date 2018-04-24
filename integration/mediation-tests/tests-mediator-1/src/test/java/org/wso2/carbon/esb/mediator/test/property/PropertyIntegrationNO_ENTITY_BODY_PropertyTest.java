@@ -27,6 +27,7 @@ import org.wso2.carbon.automation.engine.annotations.ExecutionEnvironment;
 import org.wso2.carbon.automation.engine.annotations.SetEnvironment;
 import org.wso2.carbon.automation.test.utils.http.client.HttpClientUtil;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -43,7 +44,7 @@ public class PropertyIntegrationNO_ENTITY_BODY_PropertyTest extends ESBIntegrati
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
         super.init();
-        OMElement config = esbUtils.loadResource("/artifacts/ESB/mediatorconfig/property/NO_ENTITY_BODY.xml");
+        OMElement config = ESBTestCaseUtils.loadResource("/artifacts/ESB/mediatorconfig/property/NO_ENTITY_BODY.xml");
         config = AXIOMUtil.stringToOM(config.toString().replace("http://localhost:8280/services/", getProxyServiceURLHttp("")));
         updateESBConfiguration(config);
         client = new HttpClientUtil();

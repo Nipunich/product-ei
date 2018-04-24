@@ -20,7 +20,6 @@ package org.wso2.esb.integration.common.utils;
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.testng.Assert;
@@ -74,7 +73,6 @@ public abstract class ESBIntegrationTest {
 	protected ContextUrls contextUrls = new ContextUrls();
 	protected String sessionCookie;
 	protected OMElement synapseConfiguration = null;
-	protected ESBTestCaseUtils esbUtils;
 	private List<String> proxyServicesList = null;
 	private List<String> sequencesList = null;
 	private List<String> endpointsList = null;
@@ -103,7 +101,6 @@ public abstract class ESBIntegrationTest {
 		context = new AutomationContext(ESBTestConstant.ESB_PRODUCT_GROUP, userMode);
 		contextUrls = context.getContextUrls();
 		sessionCookie = login(context);
-		esbUtils = new ESBTestCaseUtils();
 		tenantInfo = context.getContextTenant();
 		userInfo = tenantInfo.getContextUser();
 	}
@@ -111,7 +108,7 @@ public abstract class ESBIntegrationTest {
 	protected void cleanup() throws Exception {
 		try {
 			if (synapseConfiguration != null) {
-				esbUtils.deleteArtifact(synapseConfiguration, contextUrls.getBackEndUrl(), sessionCookie);
+				ESBTestCaseUtils.deleteArtifact(synapseConfiguration, contextUrls.getBackEndUrl(), sessionCookie);
 				if (context.getProductGroup().isClusterEnabled()) {
 
 					long deploymentDelay = Long.parseLong(context.getConfigurationValue("//deploymentDelay"));
@@ -165,7 +162,6 @@ public abstract class ESBIntegrationTest {
 			priorityExecutorList = null;
 			axis2Client.destroy();
 			axis2Client = null;
-			esbUtils = null;
 			scheduledTaskList = null;
 		}
 	}
@@ -195,28 +191,28 @@ public abstract class ESBIntegrationTest {
 	}
 
 	protected void loadSampleESBConfiguration(int sampleNo) throws Exception {
-		OMElement synapseSample = esbUtils.loadESBSampleConfiguration(sampleNo);
+		OMElement synapseSample = ESBTestCaseUtils.loadESBSampleConfiguration(sampleNo);
 		updateESBConfiguration(synapseSample);
 	}
 
     protected OMElement loadSampleESBConfigurationWithoutApply(int sampleNo) throws Exception {
-        return esbUtils.loadESBSampleConfiguration(sampleNo);
+        return ESBTestCaseUtils.loadESBSampleConfiguration(sampleNo);
     }
 
 	protected void loadESBConfigurationFromClasspath(String relativeFilePath) throws Exception {
 		relativeFilePath = relativeFilePath.replaceAll("[\\\\/]", Matcher.quoteReplacement(File.separator));
 
-		OMElement synapseConfig = esbUtils.loadResource(relativeFilePath);
+		OMElement synapseConfig = ESBTestCaseUtils.loadResource(relativeFilePath);
 		updateESBConfiguration(synapseConfig);
 
 	}
     protected void deleteLibrary(String fullQualifiedName)
             throws MediationLibraryAdminServiceException, RemoteException {
-        esbUtils.deleteLibrary(contextUrls.getBackEndUrl(),sessionCookie,fullQualifiedName);
+		ESBTestCaseUtils.deleteLibrary(contextUrls.getBackEndUrl(),sessionCookie,fullQualifiedName);
     }
 
     protected  String[]  getAllImports() throws RemoteException {
-        return esbUtils.getAllImports(contextUrls.getBackEndUrl(),sessionCookie);
+        return ESBTestCaseUtils.getAllImports(contextUrls.getBackEndUrl(),sessionCookie);
     }
 	protected void updateESBConfiguration(OMElement synapseConfig) throws Exception {
 
@@ -228,7 +224,7 @@ public abstract class ESBIntegrationTest {
 				synapseConfiguration.addChild(itr.next());
 			}
 		}
-		esbUtils.updateESBConfiguration(setEndpoints(synapseConfig), contextUrls.getBackEndUrl(), sessionCookie);
+		ESBTestCaseUtils.updateESBConfiguration(setEndpoints(synapseConfig), contextUrls.getBackEndUrl(), sessionCookie);
 
 		if (context.getProductGroup().isClusterEnabled()) {
 			long deploymentDelay = Long.parseLong(context.getConfigurationValue("//deploymentDelay"));
@@ -249,14 +245,14 @@ public abstract class ESBIntegrationTest {
 
 	protected void addProxyService(OMElement proxyConfig) throws Exception {
 		String proxyName = proxyConfig.getAttributeValue(new QName("name"));
-		if (esbUtils.isProxyServiceExist(contextUrls.getBackEndUrl(), sessionCookie, proxyName)) {
-			esbUtils.deleteProxyService(contextUrls.getBackEndUrl(), sessionCookie, proxyName);
+		if (ESBTestCaseUtils.isProxyServiceExist(contextUrls.getBackEndUrl(), sessionCookie, proxyName)) {
+			ESBTestCaseUtils.deleteProxyService(contextUrls.getBackEndUrl(), sessionCookie, proxyName);
 		}
 		if (proxyServicesList == null) {
 			proxyServicesList = new ArrayList<String>();
 		}
 		proxyServicesList.add(proxyName);
-		esbUtils.addProxyService(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(proxyConfig));
+		ESBTestCaseUtils.addProxyService(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(proxyConfig));
 
        /* if (ExecutionEnvironment.stratos.name().equalsIgnoreCase(getExecutionEnvironment())) {
             long deploymentDelay = FrameworkFactory.getFrameworkProperties(
@@ -272,7 +268,7 @@ public abstract class ESBIntegrationTest {
 
 	protected void addInboundEndpoint(OMElement inboundEndpoint) throws Exception {
 		try {
-			esbUtils.addInboundEndpoint(contextUrls.getBackEndUrl(), sessionCookie, inboundEndpoint);
+			ESBTestCaseUtils.addInboundEndpoint(contextUrls.getBackEndUrl(), sessionCookie, inboundEndpoint);
 		} catch (Exception e) {
 			throw new Exception("Error when adding InboundEndpoint",e);
 		}
@@ -280,7 +276,7 @@ public abstract class ESBIntegrationTest {
 
 	protected void isInboundUndeployed(String inboundEndpoint) throws Exception {
 		try {
-			esbUtils.isInboundEndpointUndeployed(contextUrls.getBackEndUrl(), sessionCookie, inboundEndpoint);
+			ESBTestCaseUtils.isInboundEndpointUndeployed(contextUrls.getBackEndUrl(), sessionCookie, inboundEndpoint);
 		} catch (Exception e) {
 			throw new Exception("Error when adding InboundEndpoint", e);
 		}
@@ -288,25 +284,25 @@ public abstract class ESBIntegrationTest {
 
 	protected void updateInboundEndpoint(OMElement inboundEndpoint) throws Exception {
 		try {
-			esbUtils.updateInboundEndpoint(contextUrls.getBackEndUrl(), sessionCookie, inboundEndpoint);
+			ESBTestCaseUtils.updateInboundEndpoint(contextUrls.getBackEndUrl(), sessionCookie, inboundEndpoint);
 		} catch (Exception e) {
 			throw new Exception("Error when adding InboundEndpoint",e);
 		}
 	}
 
 	protected void isProxyNotDeployed(String proxyServiceName) throws Exception {
-		Assert.assertFalse(esbUtils.isProxyDeployed(contextUrls.getBackEndUrl(), sessionCookie,
+		Assert.assertFalse(ESBTestCaseUtils.isProxyDeployed(contextUrls.getBackEndUrl(), sessionCookie,
 													proxyServiceName), "Proxy Deployment failed or time out");
 	}
 
 
 	protected void deleteInboundEndpoints() throws Exception {
         try {
-            InboundEndpointDTO[] inboundEndpointDTOs = esbUtils.getAllInboundEndpoints(contextUrls.getBackEndUrl(), sessionCookie);
+            InboundEndpointDTO[] inboundEndpointDTOs = ESBTestCaseUtils.getAllInboundEndpoints(contextUrls.getBackEndUrl(), sessionCookie);
             if (inboundEndpointDTOs != null) {
                 for (InboundEndpointDTO inboundEndpointDTO : inboundEndpointDTOs) {
                     if (inboundEndpointDTO != null && inboundEndpointDTO.getName() != null) {
-                        esbUtils.deleteInboundEndpointDeployed(contextUrls.getBackEndUrl(), sessionCookie,
+						ESBTestCaseUtils.deleteInboundEndpointDeployed(contextUrls.getBackEndUrl(), sessionCookie,
                                                                inboundEndpointDTO.getName());
                     }
                 }
@@ -320,7 +316,7 @@ public abstract class ESBIntegrationTest {
 	protected void deleteInboundEndpointFromName(String name) throws Exception {
 		try {
 
-			esbUtils.deleteInboundEndpointDeployed(contextUrls.getBackEndUrl(), sessionCookie,
+			ESBTestCaseUtils.deleteInboundEndpointDeployed(contextUrls.getBackEndUrl(), sessionCookie,
 			                                       name);
 		} catch (Exception e) {
 			throw new Exception("Error when deleting InboundEndpoint",e);
@@ -330,14 +326,14 @@ public abstract class ESBIntegrationTest {
 
 
 	protected void isProxyDeployed(String proxyServiceName) throws Exception {
-		Assert.assertTrue(esbUtils.isProxyDeployed(contextUrls.getBackEndUrl(), sessionCookie,
+		Assert.assertTrue(ESBTestCaseUtils.isProxyDeployed(contextUrls.getBackEndUrl(), sessionCookie,
 		                                           proxyServiceName), "Proxy Deployment failed or time out");
 	}
 
 	protected void deleteProxyService(String proxyServiceName) throws Exception {
-		if (esbUtils.isProxyServiceExist(contextUrls.getBackEndUrl(), sessionCookie, proxyServiceName)) {
-			esbUtils.deleteProxyService(contextUrls.getBackEndUrl(), sessionCookie, proxyServiceName);
-			Assert.assertTrue(esbUtils.isProxyUnDeployed(contextUrls.getBackEndUrl(), sessionCookie,
+		if (ESBTestCaseUtils.isProxyServiceExist(contextUrls.getBackEndUrl(), sessionCookie, proxyServiceName)) {
+			ESBTestCaseUtils.deleteProxyService(contextUrls.getBackEndUrl(), sessionCookie, proxyServiceName);
+			Assert.assertTrue(ESBTestCaseUtils.isProxyUnDeployed(contextUrls.getBackEndUrl(), sessionCookie,
 			                                             proxyServiceName), "Proxy Deletion failed or time out");
 		}
 		if (proxyServicesList != null && proxyServicesList.contains(proxyServiceName)) {
@@ -347,8 +343,8 @@ public abstract class ESBIntegrationTest {
 
 	protected void deleteSequence(String sequenceName)
 			throws SequenceEditorException, RemoteException {
-		if (esbUtils.isSequenceExist(contextUrls.getBackEndUrl(), sessionCookie, sequenceName)) {
-			esbUtils.deleteSequence(contextUrls.getBackEndUrl(), sessionCookie, sequenceName);
+		if (ESBTestCaseUtils.isSequenceExist(contextUrls.getBackEndUrl(), sessionCookie, sequenceName)) {
+			ESBTestCaseUtils.deleteSequence(contextUrls.getBackEndUrl(), sessionCookie, sequenceName);
 		}
 		if (sequencesList != null && sequencesList.contains(sequenceName)) {
 			sequencesList.remove(sequenceName);
@@ -357,10 +353,10 @@ public abstract class ESBIntegrationTest {
 
 	protected void addSequence(OMElement sequenceConfig) throws Exception {
 		String sequenceName = sequenceConfig.getAttributeValue(new QName("name"));
-		if (esbUtils.isSequenceExist(contextUrls.getBackEndUrl(), sessionCookie, sequenceName)) {
-			esbUtils.deleteSequence(contextUrls.getBackEndUrl(), sessionCookie, sequenceName);
+		if (ESBTestCaseUtils.isSequenceExist(contextUrls.getBackEndUrl(), sessionCookie, sequenceName)) {
+			ESBTestCaseUtils.deleteSequence(contextUrls.getBackEndUrl(), sessionCookie, sequenceName);
 		}
-		esbUtils.addSequence(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(sequenceConfig));
+		ESBTestCaseUtils.addSequence(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(sequenceConfig));
 		if (sequencesList == null) {
 			sequencesList = new ArrayList<String>();
 		}
@@ -379,22 +375,22 @@ public abstract class ESBIntegrationTest {
 		uploadLibraryInfoList.add(uploadedFileItem);
 		LibraryFileItem[] uploadServiceTypes = new LibraryFileItem[uploadLibraryInfoList.size()];
 		uploadServiceTypes = uploadLibraryInfoList.toArray(uploadServiceTypes);
-		esbUtils.uploadConnector(contextUrls.getBackEndUrl(),sessionCookie,uploadServiceTypes);
+		ESBTestCaseUtils.uploadConnector(contextUrls.getBackEndUrl(),sessionCookie,uploadServiceTypes);
 	}
 
 	protected void updateConnectorStatus(String libQName, String libName,
 	                                     String packageName, String status) throws RemoteException {
-		esbUtils.updateConnectorStatus(contextUrls.getBackEndUrl(),sessionCookie,libQName, libName, packageName, status);
+		ESBTestCaseUtils.updateConnectorStatus(contextUrls.getBackEndUrl(),sessionCookie,libQName, libName, packageName, status);
 	}
 
 
 	protected void addEndpoint(OMElement endpointConfig)
 			throws Exception {
 		String endpointName = endpointConfig.getAttributeValue(new QName("name"));
-		if (esbUtils.isSequenceExist(contextUrls.getBackEndUrl(), sessionCookie, endpointName)) {
-			esbUtils.deleteEndpoint(contextUrls.getBackEndUrl(), sessionCookie, endpointName);
+		if (ESBTestCaseUtils.isSequenceExist(contextUrls.getBackEndUrl(), sessionCookie, endpointName)) {
+			ESBTestCaseUtils.deleteEndpoint(contextUrls.getBackEndUrl(), sessionCookie, endpointName);
 		}
-		esbUtils.addEndpoint(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(endpointConfig));
+		ESBTestCaseUtils.addEndpoint(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(endpointConfig));
 		if (endpointsList == null) {
 			endpointsList = new ArrayList<String>();
 		}
@@ -404,10 +400,10 @@ public abstract class ESBIntegrationTest {
 
 	protected void addLocalEntry(OMElement localEntryConfig) throws Exception {
 		String localEntryName = localEntryConfig.getAttributeValue(new QName("key"));
-		if (esbUtils.isLocalEntryExist(contextUrls.getBackEndUrl(), sessionCookie, localEntryName)) {
-			esbUtils.deleteLocalEntry(contextUrls.getBackEndUrl(), sessionCookie, localEntryName);
+		if (ESBTestCaseUtils.isLocalEntryExist(contextUrls.getBackEndUrl(), sessionCookie, localEntryName)) {
+			ESBTestCaseUtils.deleteLocalEntry(contextUrls.getBackEndUrl(), sessionCookie, localEntryName);
 		}
-		esbUtils.addLocalEntry(contextUrls.getBackEndUrl(), sessionCookie, localEntryConfig);
+		ESBTestCaseUtils.addLocalEntry(contextUrls.getBackEndUrl(), sessionCookie, localEntryConfig);
 
 		if (localEntryList == null) {
 			localEntryList = new ArrayList<String>();
@@ -417,10 +413,10 @@ public abstract class ESBIntegrationTest {
 
 	protected void addMessageProcessor(OMElement messageProcessorConfig) throws Exception {
 		String messageProcessorName = messageProcessorConfig.getAttributeValue(new QName("name"));
-		if (esbUtils.isMessageProcessorExist(contextUrls.getBackEndUrl(), sessionCookie, messageProcessorName)) {
-			esbUtils.deleteMessageProcessor(contextUrls.getBackEndUrl(), sessionCookie, messageProcessorName);
+		if (ESBTestCaseUtils.isMessageProcessorExist(contextUrls.getBackEndUrl(), sessionCookie, messageProcessorName)) {
+			ESBTestCaseUtils.deleteMessageProcessor(contextUrls.getBackEndUrl(), sessionCookie, messageProcessorName);
 		}
-		esbUtils.addMessageProcessor(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(messageProcessorConfig));
+		ESBTestCaseUtils.addMessageProcessor(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(messageProcessorConfig));
 		if (messageProcessorsList == null) {
 			messageProcessorsList = new ArrayList<String>();
 		}
@@ -429,10 +425,10 @@ public abstract class ESBIntegrationTest {
 
 	protected void addMessageStore(OMElement messageStoreConfig) throws Exception {
 		String messageStoreName = messageStoreConfig.getAttributeValue(new QName("name"));
-		if (esbUtils.isMessageStoreExist(contextUrls.getBackEndUrl(), sessionCookie, messageStoreName)) {
-			esbUtils.deleteMessageStore(contextUrls.getBackEndUrl(), sessionCookie, messageStoreName);
+		if (ESBTestCaseUtils.isMessageStoreExist(contextUrls.getBackEndUrl(), sessionCookie, messageStoreName)) {
+			ESBTestCaseUtils.deleteMessageStore(contextUrls.getBackEndUrl(), sessionCookie, messageStoreName);
 		}
-		esbUtils.addMessageStore(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(messageStoreConfig));
+		ESBTestCaseUtils.addMessageStore(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(messageStoreConfig));
 		if (messageStoresList == null) {
 			messageStoresList = new ArrayList<String>();
 		}
@@ -441,10 +437,10 @@ public abstract class ESBIntegrationTest {
 
 	protected void addSequenceTemplate(OMElement sequenceTemplate) throws Exception {
 		String name = sequenceTemplate.getAttributeValue(new QName("name"));
-		if (esbUtils.isSequenceTemplateExist(contextUrls.getBackEndUrl(), sessionCookie, name)) {
-			esbUtils.deleteSequenceTemplate(contextUrls.getBackEndUrl(), sessionCookie, name);
+		if (ESBTestCaseUtils.isSequenceTemplateExist(contextUrls.getBackEndUrl(), sessionCookie, name)) {
+			ESBTestCaseUtils.deleteSequenceTemplate(contextUrls.getBackEndUrl(), sessionCookie, name);
 		}
-		esbUtils.addSequenceTemplate(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(sequenceTemplate));
+		ESBTestCaseUtils.addSequenceTemplate(contextUrls.getBackEndUrl(), sessionCookie, setEndpoints(sequenceTemplate));
 
 		if (sequenceTemplateList == null) {
 			sequenceTemplateList = new ArrayList<String>();
@@ -454,10 +450,10 @@ public abstract class ESBIntegrationTest {
 
 	protected void addApi(OMElement api) throws Exception {
 		String apiName = api.getAttributeValue(new QName("name"));
-		if (esbUtils.isApiExist(contextUrls.getBackEndUrl(), sessionCookie, apiName)) {
-			esbUtils.deleteApi(contextUrls.getBackEndUrl(), sessionCookie, apiName);
+		if (ESBTestCaseUtils.isApiExist(contextUrls.getBackEndUrl(), sessionCookie, apiName)) {
+			ESBTestCaseUtils.deleteApi(contextUrls.getBackEndUrl(), sessionCookie, apiName);
 		}
-		esbUtils.addAPI(contextUrls.getBackEndUrl(), sessionCookie, api);
+		ESBTestCaseUtils.addAPI(contextUrls.getBackEndUrl(), sessionCookie, api);
 
 		if (apiList == null) {
 			apiList = new ArrayList<String>();
@@ -467,10 +463,10 @@ public abstract class ESBIntegrationTest {
 
 	protected void addPriorityExecutor(OMElement priorityExecutor) throws Exception {
 		String executorName = priorityExecutor.getAttributeValue(new QName("name"));
-		if (esbUtils.isPriorityExecutorExist(contextUrls.getBackEndUrl(), sessionCookie, executorName)) {
-			esbUtils.deletePriorityExecutor(contextUrls.getBackEndUrl(), sessionCookie, executorName);
+		if (ESBTestCaseUtils.isPriorityExecutorExist(contextUrls.getBackEndUrl(), sessionCookie, executorName)) {
+			ESBTestCaseUtils.deletePriorityExecutor(contextUrls.getBackEndUrl(), sessionCookie, executorName);
 		}
-		esbUtils.addPriorityExecutor(contextUrls.getBackEndUrl(), sessionCookie, priorityExecutor);
+		ESBTestCaseUtils.addPriorityExecutor(contextUrls.getBackEndUrl(), sessionCookie, priorityExecutor);
 
 		if (priorityExecutorList == null) {
 			priorityExecutorList = new ArrayList<String>();
@@ -481,10 +477,10 @@ public abstract class ESBIntegrationTest {
 	protected void addScheduledTask(OMElement task) throws Exception {
 		String taskName = task.getAttributeValue(new QName("name"));
 		String taskGroup = task.getAttributeValue(new QName("group"));
-		if (esbUtils.isScheduleTaskExist(contextUrls.getBackEndUrl(), sessionCookie, taskName)) {
-			esbUtils.deleteScheduleTask(contextUrls.getBackEndUrl(), sessionCookie, taskName, taskGroup);
+		if (ESBTestCaseUtils.isScheduleTaskExist(contextUrls.getBackEndUrl(), sessionCookie, taskName)) {
+			ESBTestCaseUtils.deleteScheduleTask(contextUrls.getBackEndUrl(), sessionCookie, taskName, taskGroup);
 		}
-		esbUtils.addScheduleTask(contextUrls.getBackEndUrl(), sessionCookie, task);
+		ESBTestCaseUtils.addScheduleTask(contextUrls.getBackEndUrl(), sessionCookie, task);
 
 		if (scheduledTaskList == null) {
 			scheduledTaskList = new ArrayList<String[]>();
@@ -515,10 +511,10 @@ public abstract class ESBIntegrationTest {
 		String fullPath = carbonHome + synapsePathFormBaseUri;
 		String defaultSynapseConfigPath = TestConfigurationProvider.getResourceLocation("ESB") +
 		                                  File.separator + "defaultconfigs" + File.separator + "synapse.xml";
-		if (esbUtils.isFileEmpty(fullPath)) {
+		if (ESBTestCaseUtils.isFileEmpty(fullPath)) {
 			try {
 				log.info("Synapse config is empty copying Backup Config to the location.");
-				esbUtils.copyFile(defaultSynapseConfigPath, fullPath);
+				ESBTestCaseUtils.copyFile(defaultSynapseConfigPath, fullPath);
 			} catch (IOException exception) {
 				throw new Exception("Exception occurred while restoring the default synapse configuration.", exception);
 			}
@@ -531,8 +527,8 @@ public abstract class ESBIntegrationTest {
 			while (itr.hasNext()) {
 				String messageProcessor = itr.next();
 				try {
-					if (esbUtils.isMessageProcessorExist(contextUrls.getBackEndUrl(), sessionCookie, messageProcessor)) {
-						esbUtils.deleteMessageProcessor(contextUrls.getBackEndUrl(), sessionCookie, messageProcessor);
+					if (ESBTestCaseUtils.isMessageProcessorExist(contextUrls.getBackEndUrl(), sessionCookie, messageProcessor)) {
+						ESBTestCaseUtils.deleteMessageProcessor(contextUrls.getBackEndUrl(), sessionCookie, messageProcessor);
 					}
 				} catch (Exception e) {
 					Assert.fail("while undeploying Message Processor. " + e.getMessage());
@@ -548,8 +544,8 @@ public abstract class ESBIntegrationTest {
 			while (itr.hasNext()) {
 				String messageStore = itr.next();
 				try {
-					if (esbUtils.isMessageStoreExist(contextUrls.getBackEndUrl(), sessionCookie, messageStore)) {
-						esbUtils.deleteMessageStore(contextUrls.getBackEndUrl(), sessionCookie, messageStore);
+					if (ESBTestCaseUtils.isMessageStoreExist(contextUrls.getBackEndUrl(), sessionCookie, messageStore)) {
+						ESBTestCaseUtils.deleteMessageStore(contextUrls.getBackEndUrl(), sessionCookie, messageStore);
 					}
 				} catch (Exception e) {
 					Assert.fail("while undeploying Message store. " + e.getMessage());
@@ -566,8 +562,8 @@ public abstract class ESBIntegrationTest {
 				String sequence = itr.next();
 				if (!sequence.equalsIgnoreCase("fault")) {
 					try {
-						if (esbUtils.isSequenceExist(contextUrls.getBackEndUrl(), sessionCookie, sequence)) {
-							esbUtils.deleteSequence(contextUrls.getBackEndUrl(), sessionCookie, sequence);
+						if (ESBTestCaseUtils.isSequenceExist(contextUrls.getBackEndUrl(), sessionCookie, sequence)) {
+							ESBTestCaseUtils.deleteSequence(contextUrls.getBackEndUrl(), sessionCookie, sequence);
 						}
 					} catch (Exception e) {
 						Assert.fail("while undeploying Sequence. " + e.getMessage());
@@ -584,8 +580,8 @@ public abstract class ESBIntegrationTest {
             while (itr.hasNext()) {
                 String proxyName = itr.next();
                 try {
-                    if (esbUtils.isProxyServiceExist(contextUrls.getBackEndUrl(), sessionCookie, proxyName)) {
-                        esbUtils.deleteProxyService(contextUrls.getBackEndUrl(), sessionCookie, proxyName);
+                    if (ESBTestCaseUtils.isProxyServiceExist(contextUrls.getBackEndUrl(), sessionCookie, proxyName)) {
+                        ESBTestCaseUtils.deleteProxyService(contextUrls.getBackEndUrl(), sessionCookie, proxyName);
 					}
 				} catch (Exception e) {
 					Assert.fail("while undeploying Proxy. " + e.getMessage());
@@ -601,8 +597,8 @@ public abstract class ESBIntegrationTest {
 			while (itr.hasNext()) {
 				String endpoint = itr.next();
 				try {
-					if (esbUtils.isEndpointExist(contextUrls.getBackEndUrl(), sessionCookie, endpoint)) {
-						esbUtils.deleteEndpoint(contextUrls.getBackEndUrl(), sessionCookie, endpoint);
+					if (ESBTestCaseUtils.isEndpointExist(contextUrls.getBackEndUrl(), sessionCookie, endpoint)) {
+						ESBTestCaseUtils.deleteEndpoint(contextUrls.getBackEndUrl(), sessionCookie, endpoint);
 					}
 				} catch (Exception e) {
 					Assert.fail("while undeploying Endpoint. " + e.getMessage());
@@ -618,8 +614,8 @@ public abstract class ESBIntegrationTest {
 			while (itr.hasNext()) {
 				String localEntry = itr.next();
 				try {
-					if (esbUtils.isLocalEntryExist(contextUrls.getBackEndUrl(), sessionCookie, localEntry)) {
-						esbUtils.deleteLocalEntry(contextUrls.getBackEndUrl(), sessionCookie, localEntry);
+					if (ESBTestCaseUtils.isLocalEntryExist(contextUrls.getBackEndUrl(), sessionCookie, localEntry)) {
+						ESBTestCaseUtils.deleteLocalEntry(contextUrls.getBackEndUrl(), sessionCookie, localEntry);
 					}
 				} catch (Exception e) {
 					Assert.fail("while undeploying LocalEntry. " + e.getMessage());
@@ -635,8 +631,8 @@ public abstract class ESBIntegrationTest {
 			while (itr.hasNext()) {
 				String localEntry = itr.next();
 				try {
-					if (esbUtils.isSequenceTemplateExist(contextUrls.getBackEndUrl(), sessionCookie, localEntry)) {
-						esbUtils.deleteSequenceTemplate(contextUrls.getBackEndUrl(), sessionCookie, localEntry);
+					if (ESBTestCaseUtils.isSequenceTemplateExist(contextUrls.getBackEndUrl(), sessionCookie, localEntry)) {
+						ESBTestCaseUtils.deleteSequenceTemplate(contextUrls.getBackEndUrl(), sessionCookie, localEntry);
 					}
 				} catch (Exception e) {
 					Assert.fail("while undeploying Sequence Template. " + e.getMessage());
@@ -652,8 +648,8 @@ public abstract class ESBIntegrationTest {
 			while (itr.hasNext()) {
 				String api = itr.next();
 				try {
-					if (esbUtils.isApiExist(contextUrls.getBackEndUrl(), sessionCookie, api)) {
-						esbUtils.deleteApi(contextUrls.getBackEndUrl(), sessionCookie, api);
+					if (ESBTestCaseUtils.isApiExist(contextUrls.getBackEndUrl(), sessionCookie, api)) {
+						ESBTestCaseUtils.deleteApi(contextUrls.getBackEndUrl(), sessionCookie, api);
 					}
 				} catch (Exception e) {
 					Assert.fail("while undeploying Api. " + e.getMessage());
@@ -669,8 +665,8 @@ public abstract class ESBIntegrationTest {
 			while (itr.hasNext()) {
 				String executor = itr.next();
 				try {
-					if (esbUtils.isPriorityExecutorExist(contextUrls.getBackEndUrl(), sessionCookie, executor)) {
-						esbUtils.deleteProxyService(contextUrls.getBackEndUrl(), sessionCookie, executor);
+					if (ESBTestCaseUtils.isPriorityExecutorExist(contextUrls.getBackEndUrl(), sessionCookie, executor)) {
+						ESBTestCaseUtils.deleteProxyService(contextUrls.getBackEndUrl(), sessionCookie, executor);
 					}
 				} catch (Exception e) {
 					Assert.fail("while undeploying Priority Executor. " + e.getMessage());
@@ -686,8 +682,8 @@ public abstract class ESBIntegrationTest {
 			while (itr.hasNext()) {
 				String[] executor = itr.next();
 				try {
-					if (esbUtils.isScheduleTaskExist(contextUrls.getBackEndUrl(), sessionCookie, executor[0])) {
-						esbUtils.deleteScheduleTask(contextUrls.getBackEndUrl(), sessionCookie, executor[0], executor[1]);
+					if (ESBTestCaseUtils.isScheduleTaskExist(contextUrls.getBackEndUrl(), sessionCookie, executor[0])) {
+						ESBTestCaseUtils.deleteScheduleTask(contextUrls.getBackEndUrl(), sessionCookie, executor[0], executor[1]);
 					}
 				} catch (Exception e) {
 					Assert.fail("while undeploying ScheduledTask Executor. " + e.getMessage());
@@ -705,9 +701,9 @@ public abstract class ESBIntegrationTest {
 		synapseConfig.getFirstChildWithName(new QName(synapseConfig.getNamespace().getNamespaceURI()
 				, "registry")).detach();
 		//adding registry configuration
-		synapseConfig.addChild(esbUtils.loadResource(resourcePath).getFirstElement());
+		synapseConfig.addChild(ESBTestCaseUtils.loadResource(resourcePath).getFirstElement());
 		synapseConfigAdminClient.updateConfiguration(synapseConfig);
-		esbUtils.verifySynapseDeployment(synapseConfig, contextUrls.getBackEndUrl(), getSessionCookie());
+		ESBTestCaseUtils.verifySynapseDeployment(synapseConfig, contextUrls.getBackEndUrl(), getSessionCookie());
 		//let server to persist the configuration
 		Thread.sleep(3000);
 
@@ -800,7 +796,7 @@ public abstract class ESBIntegrationTest {
 	protected OMElement replaceEndpoints(String relativePathToConfigFile, String serviceName,
 	                                     String port)
 			throws XMLStreamException, FileNotFoundException, XPathExpressionException {
-		String config = esbUtils.loadResource(relativePathToConfigFile).toString();
+		String config = ESBTestCaseUtils.loadResource(relativePathToConfigFile).toString();
 		config = config.replace("http://localhost:" + port + "/services/" + serviceName,
 		                        getBackEndServiceUrl(serviceName));
 

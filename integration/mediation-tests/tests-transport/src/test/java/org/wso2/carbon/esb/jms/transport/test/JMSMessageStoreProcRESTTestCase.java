@@ -28,6 +28,7 @@ import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.client.JMSQueueMessageConsumer;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.controller.config.JMSBrokerConfigurationProvider;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.clients.SimpleHttpClient;
@@ -60,7 +61,7 @@ public class JMSMessageStoreProcRESTTestCase extends ESBIntegrationTest {
         super.init();
         headers.put("Test-Header-Field", "TestHeaderValue");
         //headers.put("Content-Type", "application/json");
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/JMSMessageStoreREST.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/JMSMessageStoreREST.xml");
         JMSQueueMessageConsumer consumer = new JMSQueueMessageConsumer(JMSBrokerConfigurationProvider.getInstance().getBrokerConfiguration());
         try {
             Thread.sleep(2000);

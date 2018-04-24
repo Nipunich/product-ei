@@ -26,6 +26,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.apache.axis2.AxisFault;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 
@@ -42,7 +43,7 @@ public class ESBJAVA2824MissingResponseTestCase extends ESBIntegrationTest {
 	@BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/jms_wait_response.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/jms_wait_response.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
     }	
 	

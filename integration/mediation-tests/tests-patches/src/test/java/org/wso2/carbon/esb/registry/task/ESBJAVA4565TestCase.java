@@ -28,6 +28,7 @@ import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.clients.registry.ResourceAdminServiceClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.activation.DataHandler;
 import java.net.URL;
@@ -52,7 +53,7 @@ public class ESBJAVA4565TestCase extends ESBIntegrationTest {
                 new DataHandler(new URL("file:///" + getESBResourceLocation() +
                                         "/registry/ftp.xml")));
 
-        OMElement sequence = esbUtils.loadResource("/artifacts/ESB/sequence/esbjava4565/testSequence.xml");
+        OMElement sequence = ESBTestCaseUtils.loadResource("/artifacts/ESB/sequence/esbjava4565/testSequence.xml");
         this.addSequence(sequence);
 
         OMElement task = AXIOMUtil.stringToOM("<task:task xmlns:task=\"http://www.wso2.org/products/wso2commons/tasks\"\n" +

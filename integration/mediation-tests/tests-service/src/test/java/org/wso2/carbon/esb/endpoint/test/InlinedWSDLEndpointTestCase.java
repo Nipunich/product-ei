@@ -68,7 +68,7 @@ public class InlinedWSDLEndpointTestCase extends ESBIntegrationTest {
             throws Exception {
         int beforeCount = endPointAdminClient.getEndpointCount();
 
-        OMElement wsdlTestEp = new ESBTestCaseUtils().loadResource("/artifacts/ESB/endpoint/wsdlTestEp.xml");
+        OMElement wsdlTestEp = ESBTestCaseUtils.loadResource("/artifacts/ESB/endpoint/wsdlTestEp.xml");
         endPointAdminClient.addEndPoint(wsdlTestEp);
         Thread.sleep(2000);
 

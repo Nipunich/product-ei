@@ -29,10 +29,7 @@ import org.wso2.carbon.automation.engine.annotations.ExecutionEnvironment;
 import org.wso2.carbon.automation.engine.annotations.SetEnvironment;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
-import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
-import org.wso2.esb.integration.common.utils.ESBTestConstant;
-import org.wso2.esb.integration.common.utils.JMSEndpointManager;
-import org.wso2.esb.integration.common.utils.Utils;
+import org.wso2.esb.integration.common.utils.*;
 import org.wso2.esb.integration.common.utils.clients.axis2client.AxisServiceClient;
 import org.wso2.esb.integration.common.utils.servers.axis2.SampleAxis2Server;
 
@@ -53,7 +50,7 @@ public class JMSAccessSOAPFaultDataTestCase extends ESBIntegrationTest {
 		axisServer.start();
 		axisServer.deployService(ESBTestConstant.ECHO_SERVICE);
 
-		OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/JMSAXISFault.xml");
+		OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/JMSAXISFault.xml");
 		updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
 		logViewerClient = new LogViewerClient(contextUrls.getBackEndUrl(), getSessionCookie());
 

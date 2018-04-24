@@ -6,6 +6,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.clients.axis2client.AxisServiceClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
@@ -19,7 +20,7 @@ public class ESBJAVA1910TestCase extends ESBIntegrationTest {
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/HTTP_SC.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/HTTP_SC.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
         logViewerClient = new LogViewerClient(contextUrls.getBackEndUrl(), getSessionCookie());
 

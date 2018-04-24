@@ -22,6 +22,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.activation.DataHandler;
 import java.io.File;
@@ -48,7 +49,7 @@ public class ESBJAVA2506RuleFetchFromRegistryFailsForTheFirstTime extends ESBInt
     public void testRuleMediatorProxyDeployed() throws Exception {
         Thread.sleep(6000);
         org.testng.Assert.assertTrue(
-                esbUtils.isProxyDeployed(contextUrls.getBackEndUrl(), getSessionCookie(),
+                ESBTestCaseUtils.isProxyDeployed(contextUrls.getBackEndUrl(), getSessionCookie(),
                         "proxyService2")
                 , "ERROR - ProxyServiceDeployer ProxyService Deployment from the file : " +
                         "esb-artifacts-rule-mediator-car_1.0.0.car/" +

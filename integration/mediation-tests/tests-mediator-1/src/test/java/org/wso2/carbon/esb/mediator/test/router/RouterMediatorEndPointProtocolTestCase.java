@@ -25,6 +25,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -39,7 +40,7 @@ public class RouterMediatorEndPointProtocolTestCase extends ESBIntegrationTest {
     public void setEnvironment() throws Exception {
         init();
         addProxy();
-        OMElement config = esbUtils.loadResource("/artifacts/ESB/mediatorconfig/router/router_https_endpoint.xml");
+        OMElement config = ESBTestCaseUtils.loadResource("/artifacts/ESB/mediatorconfig/router/router_https_endpoint.xml");
         config = AXIOMUtil.stringToOM(config.toString().replace("https://localhost:8243/services/StockQuoteProxy"
                 , getProxyServiceURLHttps("StockQuoteProxy")));
         updateESBConfiguration(config);

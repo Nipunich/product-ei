@@ -31,7 +31,6 @@ public class ESBBaseTest {
     public StockQuoteClient axis2Client;
     public AutomationContext automationContext = null;
     public OMElement synapseConfiguration = null;
-    public ESBTestCaseUtils esbUtils;
     private List<String> proxyServicesList = null;
     private List<String> sequencesList = null;
     private List<String> endpointsList = null;

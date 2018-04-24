@@ -28,6 +28,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 import org.wso2.carbon.logging.view.stub.LogViewerLogViewerException;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
@@ -54,7 +55,7 @@ public class ESBJAVA4702JMSHeaderTest extends ESBIntegrationTest {
     @BeforeClass(alwaysRun = true)
     public void init() throws Exception {
         super.init();
-        OMElement synapse = esbUtils.loadResource("artifacts/ESB/jms/transport/ESBJAVA4702synapseconfig.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("artifacts/ESB/jms/transport/ESBJAVA4702synapseconfig.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
         inboundAdminClient = new InboundAdminClient(context.getContextUrls().getBackEndUrl(), getSessionCookie());
         addInboundEndpoint(addEndpoint());

@@ -28,6 +28,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.integration.common.admin.client.ApplicationAdminClient;
 import org.wso2.carbon.integration.common.admin.client.CarbonAppUploaderClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.activation.DataHandler;
 import java.io.File;
@@ -57,54 +58,54 @@ public class CarbonApplicationDeploymentTestCase extends ESBIntegrationTest {
 
     @Test(groups = {"wso2.esb"}, description = "test endpoint deployment from car file")
     public void endpointDeploymentTest() throws Exception {
-        Assert.assertTrue(esbUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "addressEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "addressEndpoint")
                 , "AddressEndpoint Endpoint deployment failed");
-        Assert.assertTrue(esbUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "loadBalanceEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "loadBalanceEndpoint")
                 , "LoadBalanceEndpoint Endpoint deployment failed");
-        Assert.assertTrue(esbUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "wsdlEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "wsdlEndpoint")
                 , "WSDLEndpoint Endpoint deployment failed");
-        Assert.assertTrue(esbUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "failOverEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "failOverEndpoint")
                 , "FailOverEndpoint Endpoint deployment failed");
-        Assert.assertTrue(esbUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "defaultEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "defaultEndpoint")
                 , "DefaultEndpoint Endpoint deployment failed");
     }
 
     @Test(groups = {"wso2.esb"}, description = "test sequence deployment from car file")
     public void sequenceDeploymentTest() throws Exception {
-        Assert.assertTrue(esbUtils.isSequenceDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleSequence")
+        Assert.assertTrue(ESBTestCaseUtils.isSequenceDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleSequence")
                 , "sampleSequence deployment failed");
-        Assert.assertTrue(esbUtils.isSequenceDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleFaultSequence")
+        Assert.assertTrue(ESBTestCaseUtils.isSequenceDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleFaultSequence")
                 , "sampleFaultSequence deployment failed");
-        Assert.assertTrue(esbUtils.isSequenceDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleSequenceWithErrorSequence")
+        Assert.assertTrue(ESBTestCaseUtils.isSequenceDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleSequenceWithErrorSequence")
                 , "sampleSequenceWithErrorSequence deployment failed");
 
     }
 
     @Test(groups = {"wso2.esb"}, description = "test API deployment from car file")
     public void apiDeploymentTest() throws Exception {
-        Assert.assertTrue(esbUtils.isApiDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "SampleAPI")
+        Assert.assertTrue(ESBTestCaseUtils.isApiDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "SampleAPI")
                 , "SampleAPI deployment failed");
 
     }
 
     @Test(groups = {"wso2.esb"}, description = "test LocalEntry deployment from car file")
     public void localEntryDeploymentTest() throws Exception {
-        Assert.assertTrue(esbUtils.isLocalEntryDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleInLineXMLLocalentry")
+        Assert.assertTrue(ESBTestCaseUtils.isLocalEntryDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleInLineXMLLocalentry")
                 , "InLine XML Local entry deployment failed");
-        Assert.assertTrue(esbUtils.isLocalEntryDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleURLLocalEntry")
+        Assert.assertTrue(ESBTestCaseUtils.isLocalEntryDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleURLLocalEntry")
                 , "URL Local Entry deployment failed");
-        Assert.assertTrue(esbUtils.isLocalEntryDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleInLineTextLocalEntry")
+        Assert.assertTrue(ESBTestCaseUtils.isLocalEntryDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleInLineTextLocalEntry")
                 , "InLine text Local Entry deployment failed");
 
     }
 
     @Test(groups = {"wso2.esb"}, description = "test proxy service deployment from car file")
     public void proxyServiceDeploymentTest() throws Exception {
-        Assert.assertTrue(esbUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "samplePassThroughProxy")
+        Assert.assertTrue(ESBTestCaseUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "samplePassThroughProxy")
                 , "Pass Through Proxy service deployment failed");
-        Assert.assertTrue(esbUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "transformProxySample")
+        Assert.assertTrue(ESBTestCaseUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "transformProxySample")
                 , "transform Proxy service deployment failed");
-        Assert.assertTrue(esbUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleCustomProxy")
+        Assert.assertTrue(ESBTestCaseUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleCustomProxy")
                 , "Custom Proxy service deployment failed");
 
     }
@@ -196,39 +197,39 @@ public class CarbonApplicationDeploymentTestCase extends ESBIntegrationTest {
     }
 
     private void verifyUndeployment() throws Exception {
-        Assert.assertTrue(esbUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "addressEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "addressEndpoint")
                 , "AddressEndpoint Endpoint Undeployment failed");
-        Assert.assertTrue(esbUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "loadBalanceEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "loadBalanceEndpoint")
                 , "LoadBalanceEndpoint Endpoint Undeployment failed");
-        Assert.assertTrue(esbUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "wsdlEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "wsdlEndpoint")
                 , "WSDLEndpoint Endpoint Undeployment failed");
-        Assert.assertTrue(esbUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "failOverEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "failOverEndpoint")
                 , "FailOverEndpoint Endpoint Undeployment failed");
-        Assert.assertTrue(esbUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "defaultEndpoint")
+        Assert.assertTrue(ESBTestCaseUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "defaultEndpoint")
                 , "DefaultEndpoint Endpoint Undeployment failed");
 
-        Assert.assertTrue(esbUtils.isSequenceUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleSequence")
+        Assert.assertTrue(ESBTestCaseUtils.isSequenceUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleSequence")
                 , "sampleSequence Undeployment failed");
-        Assert.assertTrue(esbUtils.isSequenceUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleFaultSequence")
+        Assert.assertTrue(ESBTestCaseUtils.isSequenceUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleFaultSequence")
                 , "sampleFaultSequence Undeployment failed");
-        Assert.assertTrue(esbUtils.isSequenceUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleSequenceWithErrorSequence")
+        Assert.assertTrue(ESBTestCaseUtils.isSequenceUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleSequenceWithErrorSequence")
                 , "sampleSequenceWithErrorSequence Undeployment failed");
 
-        Assert.assertTrue(esbUtils.isApiUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "SampleAPI")
+        Assert.assertTrue(ESBTestCaseUtils.isApiUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "SampleAPI")
                 , "SampleAPI Undeployment failed");
 
-        Assert.assertTrue(esbUtils.isLocalEntryUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleInLineXMLLocalentry")
+        Assert.assertTrue(ESBTestCaseUtils.isLocalEntryUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleInLineXMLLocalentry")
                 , "InLine XML Local entry Undeployment failed");
-        Assert.assertTrue(esbUtils.isLocalEntryUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleURLLocalEntry")
+        Assert.assertTrue(ESBTestCaseUtils.isLocalEntryUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleURLLocalEntry")
                 , "URL Local Entry Undeployment failed");
-        Assert.assertTrue(esbUtils.isLocalEntryUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleInLineTextLocalEntry")
+        Assert.assertTrue(ESBTestCaseUtils.isLocalEntryUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleInLineTextLocalEntry")
                 , "InLine text Local Entry Undeployment failed");
 
-        Assert.assertTrue(esbUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "samplePassThroughProxy")
+        Assert.assertTrue(ESBTestCaseUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "samplePassThroughProxy")
                 , "Pass Through Proxy service Undeployment failed");
-        Assert.assertTrue(esbUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "transformProxySample")
+        Assert.assertTrue(ESBTestCaseUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "transformProxySample")
                 , "transform Proxy service Undeployment failed");
-        Assert.assertTrue(esbUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleCustomProxy")
+        Assert.assertTrue(ESBTestCaseUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(), "sampleCustomProxy")
                 , "Custom Proxy service Undeployment failed");
     }
 }

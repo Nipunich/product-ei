@@ -35,6 +35,7 @@ import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.integration.common.admin.client.TenantManagementServiceClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 /**
  * Created by shameera on 7/8/14.
@@ -55,7 +56,7 @@ public class ServiceChainingTest extends ESBIntegrationTest {
         AuthenticatorClient authClient = new AuthenticatorClient(contextUrls.getBackEndUrl());
         String session = authClient.login("jhon@t5.com", "jhonporter", "localhost");
         // load configuration in tenant space
-        esbUtils.loadESBConfigurationFrom("artifacts/ESB/ServiceChainingConfig.xml", contextUrls.getBackEndUrl(), session);
+        ESBTestCaseUtils.loadESBConfigurationFrom("artifacts/ESB/ServiceChainingConfig.xml", contextUrls.getBackEndUrl(), session);
         // Create service client
         ServiceClient sc = getServiceClient("http://localhost:8480/services/t/t5.com/ServiceChainingProxy", null,
                                             "wso2");

@@ -26,6 +26,7 @@ import org.wso2.carbon.automation.extensions.servers.jmsserver.client.JMSQueueMe
 import org.wso2.carbon.automation.extensions.servers.jmsserver.client.JMSQueueMessageProducer;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.controller.config.JMSBrokerConfigurationProvider;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 
 import javax.jms.MapMessage;
@@ -35,7 +36,7 @@ public class JMSMapMessageTestCase extends ESBIntegrationTest {
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        OMElement synapse = esbUtils.loadResource("/artifacts/ESB/jms/transport/jms_map_message_proxy_service.xml");
+        OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/jms_map_message_proxy_service.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
     }
 

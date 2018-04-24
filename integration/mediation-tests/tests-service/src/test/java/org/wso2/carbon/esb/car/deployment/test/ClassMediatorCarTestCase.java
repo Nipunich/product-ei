@@ -29,6 +29,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.integration.common.admin.client.ApplicationAdminClient;
 import org.wso2.carbon.integration.common.admin.client.CarbonAppUploaderClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.activation.DataHandler;
 import java.io.File;
@@ -72,7 +73,7 @@ public class ClassMediatorCarTestCase extends ESBIntegrationTest {
     @Test(groups = {"wso2.esb"}, description = "Test Car with Mediator deployment and invocation")
     public void capp1DeploymentAndServiceInvocation() throws Exception {
 
-        Assert.assertTrue(esbUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        Assert.assertTrue(ESBTestCaseUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                                                    proxyName)
                 , "Proxy service deployment failed");
 
@@ -98,7 +99,7 @@ public class ClassMediatorCarTestCase extends ESBIntegrationTest {
         isCarFile1Uploaded = false;
         Assert.assertTrue(isCarFileUnDeployed(car1Name), "Car file undeployment failed");
         TimeUnit.SECONDS.sleep(5);
-        Assert.assertTrue(esbUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        Assert.assertTrue(ESBTestCaseUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                                                      proxyName)
                 , "Car1 un-deployment failed");
 
@@ -128,7 +129,7 @@ public class ClassMediatorCarTestCase extends ESBIntegrationTest {
                         , dependsOnMethods = {"uploadCar2Test"})
     public void capp2DeploymentAndServiceInvocation() throws Exception {
 
-        Assert.assertTrue(esbUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        Assert.assertTrue(ESBTestCaseUtils.isProxyDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                                                    proxyName)
                 , "Proxy service deployment failed");
 
@@ -154,7 +155,7 @@ public class ClassMediatorCarTestCase extends ESBIntegrationTest {
         isCarFile2Uploaded = false;
         Assert.assertTrue(isCarFileUnDeployed(car2Name), "Car file undeployment failed");
         TimeUnit.SECONDS.sleep(5);
-        Assert.assertTrue(esbUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        Assert.assertTrue(ESBTestCaseUtils.isProxyUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                                                      proxyName)
                 , "Car2 un-deployment failed");
 

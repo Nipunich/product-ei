@@ -24,6 +24,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 
 import javax.xml.namespace.QName;
 
@@ -37,7 +38,7 @@ public class ProxyServiceHttpToHttpsServiceTestCase extends ESBIntegrationTest {
         loadESBConfigurationFromClasspath(
                 "/artifacts/ESB/proxyconfig/proxy/proxyservice/http_to_https_proxy.xml");
         updateESBConfiguration(AXIOMUtil.stringToOM(
-                esbUtils.loadResource("/artifacts/ESB/proxyconfig/proxy/proxyservice/http_to_https_proxy.xml")
+                ESBTestCaseUtils.loadResource("/artifacts/ESB/proxyconfig/proxy/proxyservice/http_to_https_proxy.xml")
                         .toString().replace("HTTPS_PROXY_URL", getProxyServiceURLHttps("StockQuoteProxyHttps"))));
 
     }

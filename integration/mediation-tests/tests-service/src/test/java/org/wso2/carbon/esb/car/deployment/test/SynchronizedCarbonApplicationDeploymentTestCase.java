@@ -27,6 +27,7 @@ import org.wso2.carbon.integration.common.admin.client.CarbonAppUploaderClient;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.ESBTestConstant;
 
 import javax.activation.DataHandler;
@@ -90,13 +91,13 @@ public class SynchronizedCarbonApplicationDeploymentTestCase extends ESBIntegrat
 
         TimeUnit.SECONDS.sleep(10);
 
-        assertTrue(esbUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        assertTrue(ESBTestCaseUtils.isEndpointDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                 "StockQuoteServiceEp")
                 , "StockQuoteServiceEp Endpoint deployment failed");
-        assertTrue(esbUtils.isMessageStoreDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        assertTrue(ESBTestCaseUtils.isMessageStoreDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                 "MyStore")
                 , "MyStore Message Store deployment failed");
-        assertTrue(esbUtils.isMessageProcessorDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie()
+        assertTrue(ESBTestCaseUtils.isMessageProcessorDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie()
                 , "ScheduledProcessor")
                 , "ScheduledProcessor Message Processor deployment failed");
 
@@ -133,15 +134,15 @@ public class SynchronizedCarbonApplicationDeploymentTestCase extends ESBIntegrat
 
         applicationAdminClient.deleteApplication("SynchroDepValidCarApp_1.0.0");
 
-        assertTrue(esbUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        assertTrue(ESBTestCaseUtils.isEndpointUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                 "StockQuoteServiceEp")
                 , "StockQuoteServiceEp Endpoint Un-deployment failure");
 
-        assertTrue(esbUtils.isMessageStoreUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        assertTrue(ESBTestCaseUtils.isMessageStoreUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                 "MyStore")
                 , "MyStore Message Store Un-deployment failure");
 
-        assertTrue(esbUtils.isMessageProcessorUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        assertTrue(ESBTestCaseUtils.isMessageProcessorUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                 "ScheduledProcessor")
                 , "ScheduledProcessor MessageProcessor Un-deployment failure");
     }
@@ -208,11 +209,11 @@ public class SynchronizedCarbonApplicationDeploymentTestCase extends ESBIntegrat
         assertTrue(messageStoreUnDeployed, "MyStore1 undeployment log not found");
         assertTrue(messageProcessorUnDeployed, "ScheduledProcessor1 undeployment log not found");
 
-        assertTrue(esbUtils.isMessageStoreUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        assertTrue(ESBTestCaseUtils.isMessageStoreUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                 "MyStore1")
                 , "MyStore1 Message Store Un-deployment failure");
 
-        assertTrue(esbUtils.isMessageProcessorUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
+        assertTrue(ESBTestCaseUtils.isMessageProcessorUnDeployed(context.getContextUrls().getBackEndUrl(), getSessionCookie(),
                 "ScheduledProcessor1")
                 , "ScheduledProcessor1 MessageProcessor Un-deployment failure");
     }

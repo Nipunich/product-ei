@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.client.JMSQueueMessageConsumer;
 import org.wso2.carbon.automation.extensions.servers.jmsserver.controller.config.JMSBrokerConfigurationProvider;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 
 /**
@@ -41,11 +42,11 @@ public class ESBJAVA1832MessageInjectorTestCase extends ESBIntegrationTest {
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        OMElement msgProessor = esbUtils.loadResource("/artifacts/ESB/jms/transport/msgInjection/msg_store.xml");
-        OMElement task = esbUtils.loadResource("/artifacts/ESB/jms/transport/msgInjection/msg_injecting_task.xml");
+        OMElement msgProessor = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/msgInjection/msg_store.xml");
+        OMElement task = ESBTestCaseUtils.loadResource("/artifacts/ESB/jms/transport/msgInjection/msg_injecting_task.xml");
         consumer = new JMSQueueMessageConsumer(JMSBrokerConfigurationProvider.getInstance().getBrokerConfiguration());
         updateESBConfiguration(JMSEndpointManager.setConfigurations(msgProessor));
-        esbUtils.addScheduleTask(contextUrls.getBackEndUrl(),getSessionCookie(), task);
+        ESBTestCaseUtils.addScheduleTask(contextUrls.getBackEndUrl(),getSessionCookie(), task);
     }
 
     @Test(groups = {"wso2.esb"}, description = "Test proxy service with jms transport")
@@ -68,7 +69,7 @@ public class ESBJAVA1832MessageInjectorTestCase extends ESBIntegrationTest {
 
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
-        esbUtils.deleteScheduleTask(contextUrls.getBackEndUrl(),getSessionCookie(),"TheTask", "synapse.simple.quartz");
+        ESBTestCaseUtils.deleteScheduleTask(contextUrls.getBackEndUrl(),getSessionCookie(),"TheTask", "synapse.simple.quartz");
         super.cleanup();
     }
 }

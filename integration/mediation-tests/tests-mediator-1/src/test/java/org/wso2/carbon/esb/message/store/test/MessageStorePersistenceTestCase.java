@@ -26,6 +26,7 @@ import org.testng.annotations.Test;
 import org.wso2.esb.integration.common.clients.mediation.MessageStoreAdminClient;
 import org.wso2.carbon.automation.engine.annotations.ExecutionEnvironment;
 import org.wso2.carbon.automation.engine.annotations.SetEnvironment;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
 
@@ -105,7 +106,7 @@ public class MessageStorePersistenceTestCase extends ESBIntegrationTest {
         if (messageStores != null) {
             List list = Arrays.asList(messageStores);
             if (list.contains(MESSAGE_STORE_NAME)) {
-                esbUtils.deleteMessageStore(contextUrls.getBackEndUrl(), getSessionCookie(), MESSAGE_STORE_NAME);
+                ESBTestCaseUtils.deleteMessageStore(contextUrls.getBackEndUrl(), getSessionCookie(), MESSAGE_STORE_NAME);
             }
         }
         messageStoreAdminClient = null;

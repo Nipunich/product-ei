@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.automation.engine.annotations.ExecutionEnvironment;
 import org.wso2.carbon.automation.engine.annotations.SetEnvironment;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.clients.mediation.SynapseConfigAdminClient;
@@ -52,8 +53,8 @@ public class Sample11TestCase extends ESBIntegrationTest {
         oldSynapseConfig = synapseConfigAdminClient.getConfiguration();
         synapseConfigAdminClient.updateConfiguration(sourceFile);
 
-        esbUtils.deleteSequence(contextUrls.getBackEndUrl(), getSessionCookie(), "main");
-        esbUtils.deleteSequence(contextUrls.getBackEndUrl(), getSessionCookie(), "fault");
+        ESBTestCaseUtils.deleteSequence(contextUrls.getBackEndUrl(), getSessionCookie(), "main");
+        ESBTestCaseUtils.deleteSequence(contextUrls.getBackEndUrl(), getSessionCookie(), "fault");
 
         ServerConfigurationManager serverManager = new ServerConfigurationManager(context);
         Thread.sleep(5000);

@@ -26,6 +26,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.JMSEndpointManager;
 import org.wso2.esb.integration.common.utils.clients.axis2client.AxisServiceClient;
 
@@ -35,7 +36,7 @@ public class ESBJAVA3282CalloutJMSHeadersTestCase extends ESBIntegrationTest {
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        OMElement synapse = esbUtils.
+        OMElement synapse = ESBTestCaseUtils.
                 loadResource("/artifacts/ESB/jms/transport/callout_jms_headers.xml");
         updateESBConfiguration(JMSEndpointManager.setConfigurations(synapse));
     }

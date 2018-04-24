@@ -33,6 +33,7 @@ import org.wso2.carbon.esb.rabbitmq.utils.RabbitMQTestUtils;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
+import org.wso2.esb.integration.common.utils.ESBTestCaseUtils;
 import org.wso2.esb.integration.common.utils.common.TestConfigurationProvider;
 import org.wso2.esb.integration.common.utils.servers.RabbitMQServer;
 
@@ -233,7 +234,7 @@ public class ESBJAVA4569RabbiMQSSLStoreWithClientCertValidationTest extends ESBI
         File tempFile = new File(basePath + "RabbitMQMsgStoreSSLWithClientCertValidationTestTMP.xml");
         try {
             FileUtils.writeStringToFile(tempFile, content, "UTF-8");
-            OMElement synapse = esbUtils.loadResource("/artifacts/ESB/messageStore/rabbitMQ/SSL/RabbitMQMsgStoreSSLWithClientCertValidationTestTMP.xml");
+            OMElement synapse = ESBTestCaseUtils.loadResource("/artifacts/ESB/messageStore/rabbitMQ/SSL/RabbitMQMsgStoreSSLWithClientCertValidationTestTMP.xml");
             updateESBConfiguration(synapse);
         } finally {
             tempFile.delete();
