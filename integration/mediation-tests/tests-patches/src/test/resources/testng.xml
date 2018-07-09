@@ -327,6 +327,7 @@
         <classes>
             <class name="org.wso2.carbon.esb.datamapper.ESBJAVA5021MultiplePrefixesAndDashSupport"/>
             <class name="org.wso2.carbon.esb.datamapper.ESBJAVA5045XsiNilElementSupport"/>
+            <class name="org.wso2.carbon.esb.datamapper.NestedElementsWithSameNameTest"/>
         </classes>
     </test>
 
