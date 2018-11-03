@@ -1164,6 +1164,12 @@
                 <artifactId>greenmail</artifactId>
                 <version>${greenmail.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.awaitility</groupId>
+                <artifactId>awaitility</artifactId>
+                <version>${awaitility.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -1399,6 +1405,9 @@
         <maven.build.helper.plugin.version>1.8</maven.build.helper.plugin.version>
         <maven.xmlbeans-maven-plugin.plugin.version>2.3.3</maven.xmlbeans-maven-plugin.plugin.version>
         <greenmail.version>1.3</greenmail.version>
+
+        <!--Integration Tests-->
+        <awaitility.version>3.1.2</awaitility.version>
     </properties>
 
     <pluginRepositories>

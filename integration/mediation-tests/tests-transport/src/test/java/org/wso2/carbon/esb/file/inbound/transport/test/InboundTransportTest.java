@@ -19,9 +19,13 @@ package org.wso2.carbon.esb.file.inbound.transport.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.commons.io.FileUtils;
+import org.awaitility.Awaitility;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -37,6 +41,9 @@ public class InboundTransportTest extends ESBIntegrationTest {
 	private LogViewerClient logViewerClient;
 	private File InboundFileFolder;
 	private String pathToFtpDir;
+
+	// Maximum waiting time in milliseconds for awaitility checks
+	private final int MAX_WAIT_TIME = 120000;
 
 	@BeforeClass(alwaysRun = true)
 	public void setEnvironment() throws Exception {
@@ -161,15 +168,17 @@ public class InboundTransportTest extends ESBIntegrationTest {
 		addInboundEndpoint(addEndpoint5());
 
 		File sourceFile = new File(pathToFtpDir + File.separator + "test.xml");
-		File targetFolder = new File(InboundFileFolder + File.separator
-				+ "spcChar");
-		File targetFile = new File(targetFolder + File.separator
-				+ "test123@wso2_xml.xml");
+		File targetFolder = new File(InboundFileFolder + File.separator + "spcChar");
+		File targetFile = new File(targetFolder + File.separator + "test123@wso2_xml.xml");
+
 		try {
 			FileUtils.copyFile(sourceFile, targetFile);
-			Thread.sleep(2000);
 
-			Assert.assertTrue(!targetFile.exists());
+			Awaitility.await()
+					  .pollInterval(500, TimeUnit.MILLISECONDS)
+					  .atMost(MAX_WAIT_TIME, TimeUnit.MILLISECONDS)
+					  .until(isFileConsumed(targetFile));
+
 		} finally {
 			deleteFile(targetFile);
 			deleteFile(targetFolder);
@@ -435,4 +444,14 @@ public class InboundTransportTest extends ESBIntegrationTest {
 	private boolean deleteFile(File file) throws IOException {
 		return file.exists() && file.delete();
 	}
+
+	private Callable<Boolean> isFileConsumed(final File file) {
+		return new Callable<Boolean>() {
+			@Override
+			public Boolean call() {
+				return !file.exists();
+			}
+		};
+	}
+
 }
