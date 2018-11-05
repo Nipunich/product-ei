@@ -18,24 +18,47 @@
 package org.wso2.carbon.esb.samples.test.mediation;
 
 import org.apache.axis2.AxisFault;
+import org.awaitility.Awaitility;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.esb.integration.common.clients.mediation.SynapseConfigAdminClient;
 import org.wso2.esb.integration.common.utils.ESBIntegrationTest;
 import org.wso2.esb.integration.common.utils.ESBTestConstant;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Sample 7: Using Schema Validation and the Usage of Local Registry for Storing Configuration Metadata
  */
 public class Sample7TestCase extends ESBIntegrationTest {
+    private String oldSynapseConfig;
 
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
         super.init();
-        loadSampleESBConfiguration(7);
+
+        File sourceFile = Paths.get(getESBResourceLocation(), "samples", "synapse_sample_7.xml").toFile();
+
+        SynapseConfigAdminClient synapseConfigAdminClient =
+                new SynapseConfigAdminClient(contextUrls.getBackEndUrl(), getSessionCookie());
+        oldSynapseConfig = synapseConfigAdminClient.getConfiguration();
+        try {
+            Awaitility.await()
+                    .pollInterval(2, TimeUnit.SECONDS)
+                    .atMost(60, TimeUnit.SECONDS)
+                    .until(isUpdateConfiguration(synapseConfigAdminClient, sourceFile));
+        } catch (Exception e) {
+            String msg = "Unable to upload synapse configurations ";
+            log.error(msg, e);
+            throw new Exception(msg, e);
+        }
     }
 
     @Test(groups = { "wso2.esb" },
@@ -59,5 +82,21 @@ public class Sample7TestCase extends ESBIntegrationTest {
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
         super.cleanup();
+        SynapseConfigAdminClient synapseConfigAdminClient =
+                new SynapseConfigAdminClient(contextUrls.getBackEndUrl(), getSessionCookie());
+        new SynapseConfigAdminClient(contextUrls.getBackEndUrl(), getSessionCookie());
+        synapseConfigAdminClient.updateConfiguration(oldSynapseConfig);
+    }
+
+    private Callable<Boolean> isUpdateConfiguration(final SynapseConfigAdminClient synapseConfigAdminClient,
+                                                    final File sourceFile) {
+
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+
+                return synapseConfigAdminClient.updateConfiguration(sourceFile);
+            }
+        };
     }
 }
