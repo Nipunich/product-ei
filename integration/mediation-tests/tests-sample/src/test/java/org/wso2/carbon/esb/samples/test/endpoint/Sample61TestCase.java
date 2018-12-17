@@ -18,6 +18,7 @@
 package org.wso2.carbon.esb.samples.test.endpoint;
 
 import org.testng.Assert;
+import org.awaitility.Awaitility;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -26,8 +27,11 @@ import org.wso2.carbon.automation.engine.annotations.SetEnvironment;
 import org.wso2.carbon.automation.test.utils.tcpmon.client.ConnectionData;
 import org.wso2.carbon.automation.test.utils.tcpmon.client.TCPMonListener;
 import org.wso2.esb.integration.common.clients.mediation.SynapseConfigAdminClient;
+import org.wso2.esb.integration.common.utils.common.AvailabilityPollingUtils;
 import org.wso2.carbon.esb.samples.test.util.ESBSampleIntegrationTest;
 import org.wso2.esb.integration.common.utils.servers.axis2.SampleAxis2Server;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample 61: Routing a Message to a Dynamic List of Recipients
@@ -42,9 +46,34 @@ public class Sample61TestCase extends ESBSampleIntegrationTest {
 	private TCPMonListener listener2;
 	private TCPMonListener listener3;
 
+    private static final int MAX_WAIT_TIME = 30000;
+    private static final int POLLING_INTERVAL = 10000;
+    private static final String HOST = "localhost";
+
+    private static final int LISTEN_PORT1 = 9100;
+    private static final int LISTEN_PORT2 = 9200;
+    private static final int LISTEN_PORT3 = 9300;
+
+    private static final int TARGET_PORT1 = 9001;
+    private static final int TARGET_PORT2 = 9002;
+    private static final int TARGET_PORT3 = 9003;
+
 	@BeforeClass(alwaysRun = true)
 	public void setEnvironment() throws Exception {
 		super.init();
+
+        Awaitility.await()
+                  .pollInterval(POLLING_INTERVAL, TimeUnit.MILLISECONDS)
+                  .atMost(MAX_WAIT_TIME, TimeUnit.MILLISECONDS)
+                  .until(AvailabilityPollingUtils.isPortClosed(HOST, LISTEN_PORT1));
+        Awaitility.await()
+                  .pollInterval(POLLING_INTERVAL, TimeUnit.MILLISECONDS)
+                  .atMost(MAX_WAIT_TIME, TimeUnit.MILLISECONDS)
+                  .until(AvailabilityPollingUtils.isPortClosed(HOST, LISTEN_PORT2));
+        Awaitility.await()
+                  .pollInterval(POLLING_INTERVAL, TimeUnit.MILLISECONDS)
+                  .atMost(MAX_WAIT_TIME, TimeUnit.MILLISECONDS)
+                  .until(AvailabilityPollingUtils.isPortClosed(HOST, LISTEN_PORT3));
 		loadSampleESBConfiguration(61);
 
 		axis2Server1 = new SampleAxis2Server("test_axis2_server_9001.xml");
@@ -59,19 +88,35 @@ public class Sample61TestCase extends ESBSampleIntegrationTest {
 		axis2Server2.start();
 		axis2Server3.start();
 
-		listener1 = new TCPMonListener(9100, "localhost", 9001);
-		listener2 = new TCPMonListener(9200, "localhost", 9002);
-		listener3 = new TCPMonListener(9300, "localhost", 9003);
+        listener1 = new TCPMonListener(LISTEN_PORT1, HOST, TARGET_PORT1);
+        listener2 = new TCPMonListener(LISTEN_PORT2, HOST, TARGET_PORT2);
+        listener3 = new TCPMonListener(LISTEN_PORT3, HOST, TARGET_PORT3);
 
-		SynapseConfigAdminClient synapseConfigAdminClient =
+
+        SynapseConfigAdminClient synapseConfigAdminClient =
 				new SynapseConfigAdminClient(contextUrls.getBackEndUrl(), getSessionCookie());
 		String config = synapseConfigAdminClient.getConfiguration();
-		config = config.replace("9001", "9100").replace("9002", "9200").replace("9003", "9300");
+        config = config.replace(String.valueOf(TARGET_PORT1), String.valueOf(LISTEN_PORT1)).
+                replace(String.valueOf(TARGET_PORT2), String.valueOf(LISTEN_PORT2)).
+                               replace(String.valueOf(TARGET_PORT3), String.valueOf(LISTEN_PORT3));
 		synapseConfigAdminClient.updateConfiguration(config);
 
 		listener1.start();
 		listener2.start();
 		listener3.start();
+
+        Awaitility.await()
+                  .pollInterval(POLLING_INTERVAL, TimeUnit.MILLISECONDS)
+                  .atMost(MAX_WAIT_TIME, TimeUnit.MILLISECONDS)
+                  .until(AvailabilityPollingUtils.isHostAvailable(HOST, LISTEN_PORT1));
+        Awaitility.await()
+                  .pollInterval(POLLING_INTERVAL, TimeUnit.MILLISECONDS)
+                  .atMost(MAX_WAIT_TIME, TimeUnit.MILLISECONDS)
+                  .until(AvailabilityPollingUtils.isHostAvailable(HOST, LISTEN_PORT2));
+        Awaitility.await()
+                  .pollInterval(POLLING_INTERVAL, TimeUnit.MILLISECONDS)
+                  .atMost(MAX_WAIT_TIME, TimeUnit.MILLISECONDS)
+                  .until(AvailabilityPollingUtils.isHostAvailable(HOST, LISTEN_PORT3));
 
 	}
 
@@ -95,15 +140,27 @@ public class Sample61TestCase extends ESBSampleIntegrationTest {
 		listener3.clear();
 
 		axis2Client.sendPlaceOrderRequest(getMainSequenceURL(), null, "WSO2");
-		Thread.sleep(5000);
+
+        Awaitility.await()
+                  .pollInterval(POLLING_INTERVAL, TimeUnit.MILLISECONDS)
+                  .atMost(MAX_WAIT_TIME, TimeUnit.MILLISECONDS)
+                  .until(AvailabilityPollingUtils.isAxisServiceInvoked(listener1));
+        Awaitility.await()
+                  .pollInterval(POLLING_INTERVAL, TimeUnit.MILLISECONDS)
+                  .atMost(MAX_WAIT_TIME, TimeUnit.MILLISECONDS)
+                  .until(AvailabilityPollingUtils.isAxisServiceInvoked(listener2));
+        Awaitility.await()
+                  .pollInterval(POLLING_INTERVAL, TimeUnit.MILLISECONDS)
+                  .atMost(MAX_WAIT_TIME, TimeUnit.MILLISECONDS)
+                  .until(AvailabilityPollingUtils.isAxisServiceInvoked(listener3));
 
 		is9001Called = isAxisServiceCalled(listener1);
 		is9002Called = isAxisServiceCalled(listener2);
 		is9003Called = isAxisServiceCalled(listener3);
 
-		Assert.assertTrue(is9001Called, "Service 9001 not called");
-		Assert.assertTrue(is9002Called, "Service 9002 not called");
-		Assert.assertTrue(is9003Called, "Service 9003 not called");
+        Assert.assertTrue(is9001Called, "Service" + TARGET_PORT1 +  " not called");
+        Assert.assertTrue(is9002Called, "Service" + TARGET_PORT2 + " not called");
+        Assert.assertTrue(is9003Called, "Service" + TARGET_PORT3 + " not called");;
 	}
 
 	@AfterClass(alwaysRun = true)
